@@ -1,0 +1,23 @@
+{
+  "name": "discord",
+  "version": "1.0.0",
+  "description": "\"# no\"",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hmm465GamingYT/hmm465bot"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hmm465GamingYT/hmm465bot"
+  },
+  "homepage": "https://github.com/Hmm465GamingYT/hmm465bot",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  },
+  "devDependencies": {}
+}
