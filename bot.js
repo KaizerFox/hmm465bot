@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
-const rp = require('discord-rich-presence')(' ');
+const rp = require('discord-rich-presence')('');
 
 client.on("ready", () => {
     console.log(`Bot has started`); 
@@ -9,11 +9,18 @@ console.log("loaded")
 
 });
 
-          
+           function sleep(delay) {
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + delay);
+      }
 
 client.on('message', async (msg) => {
+
+let ownerID = `${client.user.id}`
+
 if (msg.content === `${config.prefix}` + 'prune') {
-if (msg.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (msg.author.id !== ownerID) {
                     return;
 }
 msg.delete();
@@ -44,6 +51,7 @@ client.on("message", async message => {
     if(message.content.indexOf(config.prefix) !== 0) return;
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+    let ownerID = `${client.user.id}`
    
   
     var fortunes = [
@@ -53,64 +61,56 @@ client.on("message", async message => {
       ":thinking:"
     ]
     if(command === "connectionspeed") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
         const m = await message.channel.send("pinging...");
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       }
 
-    if(command === "say") {
-if (message.author.id !== config.ownerID) {
+if(command === "help") {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
- await client.send_typing(message.channel)
- const strx = args.join(" ");
-        message.delete().catch(O_o=>{}); 
-   sleep(1)
-        await client.send_message(strx)
-      }
+embed = new Discord.RichEmbed()
+          .setColor(0xed3434)
+          .addField("!kick [user], !embed [color hex] [message], !ban [user], !8ball [question], !unban [user], !userinfo [user], !eval [js code], !gay [user], !setstatus [game]"),
+message.channel.sendEmbed(embed);
+} 
 
-      if(command === "kick") {
-if (message.author.id !== config.ownerID) {
+if(command === "kick") {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
         if(!message.member.hasPermission("KICK_MEMBERS"))
         return(
-          error = new Discord.RichEmbed()
-          .setColor(0xed3434)
-          .addField("Error", "Sorry, you don't have permissions to use this!"),
-          message.channel.sendEmbed(error)
+          message.channel.send("Sorry, you don't have permissions to use this!")
         );         
         let member = message.mentions.members.first();
         if(!member)
         return(
-          error = new Discord.RichEmbed()
-          .setColor(0xed3434)
-          .addField("Error", "Please mention a valid member of this server"),
-          message.channel.sendEmbed(error)
+          message.channel.send("Please mention a valid member of this server")
         ); 
         if(!member.kickable) 
         return(
-          error = new Discord.RichEmbed()
-          .setColor(0xed3434)
-          .addField("Error", "I can't do this"),
-          message.channel.sendEmbed(error)
+          message.channel.send("member is not kickable")
         );     
         let reason = args.slice(1).join(' ');
         if(!reason) reason = "No reason provided";
         
         
         await member.kick(reason)
-          .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-          let embed = new Discord.RichEmbed()
-          .setColor(0x21dd43)
-          .setDescription(`${member} has been kicked by ${message} because: ${reason}`)
-          message.channel.sendEmbed(embed)
+          .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`))
+          message.channel.send(`${member} has been kicked by ${message} because: ${reason}`)
     
       }
-      if(command === "embed") {
-if (message.author.id !== config.ownerID) {
+
+if(command === "embed") {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
         const strx = args.join(" ");
@@ -124,8 +124,11 @@ return;
         .setDescription(msgx)
         message.channel.sendEmbed(embed)
       }
+     
+
       if(command === "ban") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
         if(!message.member.hasPermission("BAN_MEMBERS"))
@@ -163,17 +166,21 @@ return;
       }
       
   if(command === "8ball") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
  const strx = args.join(" ");
- if(!strx) return;
+ if(!strx) {
+return message.channel.send("usage: !8ball [question]");
+}
  message.channel.send(fortunes[Math.floor(Math.random() * fortunes.length)]);
       }
 
 
      if(command === "unban") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
         if(!message.member.hasPermission("ADMINISTRATOR"))
@@ -188,7 +195,8 @@ return;
         message.channel.send(`<@${ied}> was unbanned`)
      }
      if(command === "userinfo") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
         let member = message.mentions.members.first() || message.guild.members.get(args[0]);
@@ -211,7 +219,8 @@ return;
 }
   
       if(command === "eval") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }     
       try {
@@ -227,7 +236,8 @@ return;
     }
   }
       if(command === "gay") {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
     let member = message.mentions.members.first();
@@ -241,18 +251,31 @@ message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** g
 
 
 if(command === 'setstatus') {
-if (message.author.id !== config.ownerID) {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
 return;
 }
 const strx = args.join(" ");
 if(!strx) {
-return message.channel.send("usage: !setstatus [name] [status]");
+return message.channel.send("usage: !setstatus [game]");
 }
-let name = args.slice(1).join(' ');
+let name = args.join(" ");
+
 
 client.user.setPresence({game: {name: `${name}`}, status:"dnd"});
 message.channel.send("successfully set status");
 }
+
+     if(command === "shutdown") {
+let ownerID = `${client.user.id}`
+if (message.author.id !== ownerID) {
+return;
+}
+message.channel.send("shutting down...")
+
+process.exit(3);
+}
+
 
 });
 
