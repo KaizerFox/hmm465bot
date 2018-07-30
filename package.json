@@ -9,6 +9,7 @@
     "discord": "^11.3.2",
     "discord-rich-presence": "0.0.6",
     "discord.js": "^11.3.2",
+    "hoek": "^5.0.3",
     "node-gyp": "^3.7.0",
     "npm": "^6.0.0",
     "rebuild": "^0.1.2"
