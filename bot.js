@@ -350,4 +350,11 @@ return message.channel.send("usage: !dmall [message]");
 
 });
 
+try {
+process.on('unhandledRejection', err => console.log(`error code\n${err.stack}\n also heres a smiley thing: "o_O"\nprobably will fix error next week :^)`));
+} catch (e) {
+console.log(e);
+};
+
+
  client.login(config.token)
