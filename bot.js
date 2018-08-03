@@ -19,9 +19,14 @@ console.log("loaded".green)
       }
 
 
-client.on('message', async (msg) => {
-console.log(`${msg.author.tag} said in ${msg.channel.name}: ${msg.content}`.yellow);
+client.on('message', message => {
+try {
+console.log(`${message.author.tag} said in ${message.channel.name} on ${message.guild}: ${message.content}`);
+} catch (e) {
+console.log(`nope: ${e.message}`);
+}
 });
+
 
 client.on('message', async (msg) => {
 
@@ -79,6 +84,14 @@ return;
   
 client.on("message", async message => {
     if(message.author.bot) return;
+    if (config.selfbot === "true") {
+	if (message.author.id !== config.ownerID) {
+					return;
+}
+}
+if (message.author.id === config.blacklist){
+			return;
+		}
     if(message.content.indexOf(config.prefix) !== 0) return;
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
@@ -91,39 +104,31 @@ client.on("message", async message => {
       "maybe"
     ]
     if(command === "ping") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
         const m = await message.channel.send("pinging...");
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       }
-
+if (command === 'permissions') {
+	try {
+	message.author.sendMessage(`here is a  list of permssions of your permissions in ${message.guild.name}`);
+		message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```')
+	} catch (e) {
+		message.channel.send(`error: ${e.message}`);
+	}
+	};
+    
 if(command === "help") {
 let blacklist = `${config.blacklist}`
 if (message.author.id == blacklist) {
 return;
 }
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
 embed = new Discord.RichEmbed()
           .setColor(0xed3434)
-          .addField("!kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message]"),
+          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message]"),
 message.channel.sendEmbed(embed);
 } 
 
 
 if(command === "spam") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
 return;
@@ -134,14 +139,6 @@ setInterval(function(){ message.channel.send(`${strx}`); }, 1000);
 }
 
 if(command === "kick") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
         if(!message.member.hasPermission("KICK_MEMBERS"))
         return(
           message.channel.send("Sorry, you don't have permissions to use this!")
@@ -166,14 +163,6 @@ return;
       }
 
 if(command === "embed") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
         const strx = args.join(" ");
         if(!strx) return;
         let msgx = args.slice(1).join(' ');
@@ -188,14 +177,6 @@ return;
      
 
       if(command === "ban") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
         if(!message.member.hasPermission("BAN_MEMBERS"))
         return(
           error = new Discord.RichEmbed()
@@ -231,14 +212,6 @@ return;
       }
       
   if(command === "8ball") {
-let blacklist = `${config.blacklist}`
-if (message.author.id === blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
  const strx = args.join(" ");
  if(!strx) {
 return message.channel.send("usage: !8ball [question]");
@@ -248,14 +221,6 @@ return message.channel.send("usage: !8ball [question]");
 
 
      if(command === "unban") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-let ownerID = `${config.owner}`
-if (message.author.id !== ownerID) {
-return;
-}
         if(!message.member.hasPermission("ADMINISTRATOR"))
         return(
           error = new Discord.RichEmbed()
@@ -268,14 +233,6 @@ return;
         message.channel.send(`<@${ied}> was unbanned`)
      }
      if(command === "userinfo") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
         let member = message.mentions.members.first() || message.guild.members.get(args[0]);
         if(!member) {
           return message.reply("usage: !userinfo [@user]");
@@ -296,10 +253,6 @@ return;
 }
   
       if(command === "eval") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
 return;
@@ -319,14 +272,6 @@ return;
 
 
       if(command === "gay") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-//let ownerID = `${config.owner}`
-//if (message.author.id !== ownerID) {
-//return;
-//}
     let member = message.mentions.members.first();
       if(!member) { 
         return message.reply("Please mention a valid member of this server");
@@ -338,13 +283,8 @@ message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** g
 
 
 if(command === 'setstatus') {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
-message.channel.send("no");
 return;
 }
 const strx = args.join(" ");
@@ -359,13 +299,8 @@ message.channel.send("successfully set status");
 }
 
      if(command === "shutdown") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
-message.channel.send("no")
 return;
 }
 await message.channel.send("shutting down...");
@@ -375,14 +310,6 @@ client.destroy()
 }
 
 if(command === "dab") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
-  //let ownerID = `${config.owner}`
-  //if (message.author.id !== ownerID) {
- // return;
-  //}
  try {
   await message.delete();
   let member = message.mentions.members.first();
@@ -400,10 +327,6 @@ return;
 }
 
 if(command === "dmall") {
-let blacklist = `${config.blacklist}`
-if (message.author.id == blacklist) {
-return;
-}
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
 return message.channel.send(`stop trying as hard as discord <@${message.author.id}>`);
