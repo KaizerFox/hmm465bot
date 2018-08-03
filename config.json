@@ -1,5 +1,6 @@
 {
 "token": "",
 "blacklist": "0",
-"prefix": "!"
+"prefix": "!",
+"selfbot": "false"
 }
