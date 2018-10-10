@@ -1,6 +1,8 @@
 {
-"token": "",
-"blacklist": "0",
+"token": "[your token]",
+"blacklist": "[a person's id you hate here]",
 "prefix": "!",
-"selfbot": "false"
+"selfbot": "[true or false]",
+"owner":"[your user id]",
+"ownerID":"[same as owner]"
 }
