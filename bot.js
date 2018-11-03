@@ -5,10 +5,11 @@ const rp = require('discord-rich-presence')('');
 const colors = require('colors');
 const async = require("async");
 const asyncio = require("asyncio");
+const util = require("util");
 
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
-client.user.setPresence({game:{name: "knight rider",type:3}});
+client.user.setPresence({game:{name: "doctor who",type:3}});
 console.log("loaded".green)
 
 });
@@ -146,10 +147,23 @@ if (config.selfbot === "true") {
 					return;
 }
 }
-console.log("starting to spam...")
+message.delete();
+console.log("starting to spam...");
   const strx = args.join(" ");
         if(!strx) return;
-setInterval(function(){ message.channel.send(`${strx}`); }, 1000);
+
+
+setInterval(function(){ 
+message.channel.startTyping(3); 
+console.log("typing...");
+message.channel.send(`${strx}`);
+sleep(100);
+console.log("stopping typing...");
+message.channel.stopTyping(true);
+ }, 1000);
+
+
+
 }
 
 if(command === "kick") {
@@ -348,7 +362,7 @@ return message.channel.send("usage: !setstatus [game]");
 let name = args.join(" ");
 
 
-client.user.setPresence({game: {name: `${name}`}, status:"dnd"});
+client.user.setPresence({game:{name: `${name}`,type:3}});
 message.channel.send("successfully set status");
 }
 
