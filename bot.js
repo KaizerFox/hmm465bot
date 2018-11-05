@@ -106,6 +106,14 @@ if (message.author.id === config.blacklist){
         const m = await message.channel.send("pinging...");
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       }
+	
+	  if(command === "die") {
+        if (message.author.id !== "219190671792144388") {
+                return;
+      }
+      process.exit(1);
+      }
+	
 if (command === 'permissions') {
   if (config.selfbot === "true") {
     if (message.author.id !== config.ownerID) {
