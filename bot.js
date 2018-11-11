@@ -12,31 +12,25 @@ const util = require("util");
 var http = require('https');
 var fs = require('fs');
 
-function pDownload(url, dest){
-  var file = fs.createWriteStream(dest);
-  return new Promise((resolve, reject) => {
-    var responseSent = false; // flag to make sure that response is sent only once.
-    http.get(url, response => {
-      response.pipe(file);
-      file.on('finish', () =>{
-        file.close(() => {
-          if(responseSent)  return;
-          responseSent = true;
-          resolve();
-        });
-      });
-    }).on('error', err => {
-        if(responseSent)  return;
-        responseSent = true;
-        reject(err);
-    });
-  });
-}
+
+fs.unlink('./updater.exe', function(err) {
+    if(err && err.code == 'ENOENT') {
+        // file doens't exist
+        console.info("File doesn't exist, won't remove it.");
+    } else if (err) {
+        // other errors, e.g. maybe we don't have enough permission
+        console.error("Error occurred while trying to remove file");
+    } else {
+        console.info(`removed`);
+    }
+});
+const request = require("request")
+var file = fs.createWriteStream("./updater.exe");
+var r = request("https://github.com/Hmm465/updater/blob/master/updater.exe?raw=true").pipe(file);
+r.on('error', function(err) { console.log(err); });
+r.on('finish', function() { file.close(console.log("done")) });
 
 
-pDownload("https://github.com/Hmm465/hmm465bot/releases/download/3.0/updater.exe", "./updater.exe")
-  .then( ()=> console.log('downloaded file no issues...'))
-  .catch( e => console.error('error while downloading', e));
 
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
