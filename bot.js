@@ -1,4 +1,4 @@
-//UPDATE TEST 3.0
+//UPDATE TEST 4.0
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
