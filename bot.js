@@ -9,23 +9,34 @@ const async = require("async");
 const asyncio = require("asyncio");
 const util = require("util");
 
-var http = require('http');
+var http = require('https');
 var fs = require('fs');
 
-var download = function(url, dest, cb) {
+function pDownload(url, dest){
   var file = fs.createWriteStream(dest);
-  var request = http.get(url, function(response) {
-    response.pipe(file);
-    file.on('finish', function() {
-      file.close(cb);  // close() is async, call cb after close completes.
+  return new Promise((resolve, reject) => {
+    var responseSent = false; // flag to make sure that response is sent only once.
+    http.get(url, response => {
+      response.pipe(file);
+      file.on('finish', () =>{
+        file.close(() => {
+          if(responseSent)  return;
+          responseSent = true;
+          resolve();
+        });
+      });
+    }).on('error', err => {
+        if(responseSent)  return;
+        responseSent = true;
+        reject(err);
     });
-  }).on('error', function(err) { // Handle errors
-    fs.unlink(dest); // Delete the file async. (But we don't check the result)
-    if (cb) cb(err.message);
   });
-};
+}
 
-download("https://github.com/Hmm465/hmm465bot/releases/download/2.0/updater.exe", "./", console.log("done downloading updater"));
+
+pDownload("https://github.com/Hmm465/hmm465bot/releases/download/3.0/updater.exe", "./updater.exe")
+  .then( ()=> console.log('downloaded file no issues...'))
+  .catch( e => console.error('error while downloading', e));
 
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
