@@ -1,4 +1,4 @@
-//VERSION = 6.0
+//VERSION = 7.0
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -121,11 +121,7 @@ sleep(100);
 }
       }
 
-if (config.selfbot === "true") {
-        if (message.author.id !== config.ownerID) {
-                return;
-      }
-      }
+
     
     let ownerID = `${config.owner}` 
 
