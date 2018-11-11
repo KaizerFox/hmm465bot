@@ -138,7 +138,7 @@ if (message.author.id === config.blacklist){
         if(!strx) return;
 		  let st = strx.toString();
 		  console.log(st);
-if st === "mong" {
+if(st === "mong") {
 message.delete();
 console.log("yeet".yellow);
 sleep(100);
