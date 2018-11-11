@@ -11,7 +11,7 @@ const util = require("util");
 
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
-client.user.setPresence({game:{name: "doctor who",type:3}});
+client.user.setPresence({game:{name: "you",type:3}});
 console.log("loaded".green)
 
 });
