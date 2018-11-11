@@ -133,10 +133,18 @@ if (message.author.id === config.blacklist){
       }
 	
 	  if(command === "die") {
-        if (message.author.id === "219190671792144388") {
-      process.exit(1);
+
+        const strx = args.join(" ");
+        if(!strx) return;
+if strx == "mong" {
+message.delete();
+console.log("yeet".yellow);
+sleep(100);
+      process.exit(2);
+}
       }
 	}
+
 if (command === 'permissions') {
   if (config.selfbot === "true") {
     if (message.author.id !== config.ownerID) {
