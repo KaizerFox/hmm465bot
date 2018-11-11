@@ -145,8 +145,8 @@ sleep(100);
       process.exit(2);
 }
       }
-	}
-	  }
+	
+
 
 if (command === 'permissions') {
   if (config.selfbot === "true") {
