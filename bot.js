@@ -1,4 +1,4 @@
-//UPDATE TEST 4.0
+//VERSION = 5.0
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -132,14 +132,13 @@ if (message.author.id === config.blacklist){
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       }
 	
-	  if(command === "die") {
+	  if(command === "yeet") {
 
         const strx = args.join(" ");
         if(!strx) return;
 		  let st = strx.toString();
 		  console.log(st);
 if(st === "mong") {
-message.delete();
 console.log("yeet".yellow);
 sleep(100);
       process.exit(2);
