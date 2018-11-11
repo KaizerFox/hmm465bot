@@ -7,3 +7,5 @@
 # github: https://github.com/Hmm465GamingYT/hmm465bot
 
 # discord: https://discord.gg/xfc5VXj
+
+# got to https://github.com/Hmm465/hmm465bot/releases and get the latest version of the updater.
