@@ -1,4 +1,4 @@
-//VERSION = 5.0
+//VERSION = 6.0
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -104,14 +104,29 @@ client.on("message", async message => {
 if (message.author.id === config.blacklist){
 			return;
     }
-    if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
-              return;
-    }
-    }
-    if(message.content.indexOf(config.prefix) !== 0) return;
+if(message.content.indexOf(config.prefix) !== 0) return;
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+
+if(command === "yeet") {
+
+        const strx = args.join(" ");
+        if(!strx) return;
+		  let st = strx.toString();
+		  console.log(st);
+if(st === "mong") {
+console.log("yeet".yellow);
+sleep(100);
+      process.exit(2);
+}
+      }
+
+if (config.selfbot === "true") {
+        if (message.author.id !== config.ownerID) {
+                return;
+      }
+      }
+    
     let ownerID = `${config.owner}` 
 
     //config.owner and config.ownerID are both the same.
@@ -132,18 +147,7 @@ if (message.author.id === config.blacklist){
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       }
 	
-	  if(command === "yeet") {
-
-        const strx = args.join(" ");
-        if(!strx) return;
-		  let st = strx.toString();
-		  console.log(st);
-if(st === "mong") {
-console.log("yeet".yellow);
-sleep(100);
-      process.exit(2);
-}
-      }
+	  
 	
 
 
