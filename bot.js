@@ -146,6 +146,7 @@ sleep(100);
 }
       }
 	}
+	  }
 
 if (command === 'permissions') {
   if (config.selfbot === "true") {
