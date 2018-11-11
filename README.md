@@ -9,3 +9,5 @@
 # discord: https://discord.gg/xfc5VXj
 
 # got to https://github.com/Hmm465/hmm465bot/releases and get the latest version of the updater.
+
+# the description explains how to use the updater
