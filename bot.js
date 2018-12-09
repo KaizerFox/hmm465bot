@@ -1,4 +1,4 @@
-//VERSION = 8.0
+//VERSION = 8.1
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -300,7 +300,7 @@ if(command === "embed") {
           if (message.author.id !== config.ownerID) {
                   return;
 }
- const strx = args[2]
+ const strx = args.slice(2).join(' ');
  if(!strx) {
 return message.channel.send("usage: !warn [question]");
 }
