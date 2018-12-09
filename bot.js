@@ -1,4 +1,4 @@
-//VERSION = 7.0
+//VERSION = 8.0
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -293,6 +293,48 @@ if(command === "embed") {
         .setColor(0x21dd43)
         .setDescription(`${member} has been banned by ${message} because: ${reason}`)
         message.channel.sendEmbed(embed)
+      }
+
+ if(command === "warn") {
+      if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+}
+ const strx = args[2]
+ if(!strx) {
+return message.channel.send("usage: !warn [question]");
+}
+let member = message.mentions.members.first();
+let server = message.guild.name
+member.send(`${member}, you have warned in ${server} because ${strx}`);
+}
+
+
+      
+        let member = message.mentions.members.first();
+        if(!member)
+        return(
+          error = new Discord.RichEmbed()
+          .setColor(0xed3434)
+          .addField("Error", "Please mention a valid member of this server"),
+          message.channel.sendEmbed(error)
+        ); 
+        if(!member.bannable) 
+        return(
+          error = new Discord.RichEmbed()
+          .setColor(0xed3434)
+          .addField("Error", "I can't do this"),
+          message.channel.sendEmbed(error)
+        );     
+        let reason = args.slice(1).join(' ');
+        if(!reason) reason = "No reason provided";
+        
+        await member.ban(reason)
+          .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+        let embed = new Discord.RichEmbed()
+        .setColor(0x21dd43)
+        .setDescription(`${member} has been banned by ${message} because: ${reason}`)
+        member.sendEmbed(embed)
       }
       
   if(command === "8ball") {
