@@ -1,4 +1,4 @@
-//VERSION = 8.1
+//VERSION = 8.2
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
