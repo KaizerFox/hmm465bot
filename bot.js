@@ -1,4 +1,4 @@
-//VERSION = 8.3
+//VERSION = 8.4
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -31,7 +31,6 @@ r.on('error', function(err) { console.log(err); });
 r.on('finish', function() { file.close(console.log("done")) });
 
 
-
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
 client.user.setPresence({game:{name: "you",type:3}});
@@ -44,11 +43,16 @@ console.log("loaded".green)
         while (new Date().getTime() < start + delay);
       }
 
-
 client.on('message', async (msg) => {
 
 let ownerID = `${config.owner}`
 let blacklist = `${config.blacklist}`
+
+//if (msg.author.id !== ownerID) {
+//if(msg.guild.id === "346657781740339202" | msg.guild.id === 346657781740339202) {
+//console.log(`${msg.author.tag} said: ${msg.content} in ${msg.guild.name} at ${msg.createdAt}`);
+//}
+//}
 
 
 if (msg.content === `${config.prefix}` + 'prune') {
@@ -107,6 +111,60 @@ if (message.author.id === config.blacklist){
 if(message.content.indexOf(config.prefix) !== 0) return;
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+
+if(command === "reverse") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.ownerID) {
+            return;
+  }
+  }
+
+try {
+message.delete();
+}
+catch (e) {
+return console.log(`couldn't delete because of ${e.message}`);
+}
+
+
+const strx = args.join(" ");
+if(!strx) return message.channel.send("usage: !reverse [text]");
+
+  var splitString = strx.split("");
+  //example: ["h", "e", "l", "l", "o"]
+
+  var reverseArray = splitString.reverse(); 
+  //example: ["o", "l", "l", "e", "h"]
+
+  var joinArray = reverseArray.join(""); 
+  //example: "olleh"
+
+  try {
+return message.channel.send(`${joinArray}`);
+  }
+catch (e) {
+return console.log(`couldnt reverse because ${e.message}`);
+}
+}
+
+function discoRole() {
+  let random = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  let roles_conf = config.roleToDisco
+  roles_conf.forEach((role) => {
+    let role_pass = message.guild.roles.find(role_s => role_s.name === "Furry");
+    role_pass.edit({color: random}).catch(e => {
+      return;
+    });
+  });
+}
+
+if(command === "discorole") {
+  if(message.author.bot) return; 
+  if (message.author.id === config.blacklist){
+        return;
+      }
+  setInterval(() => { discoRole(); }, 10000);
+} 
 
 if(command === "yeet") {
 
@@ -171,11 +229,18 @@ let blacklist = `${config.blacklist}`
 if (message.author.id == blacklist) {
 return;
 }
+try {
 embed = new Discord.RichEmbed()
           .setColor(0xed3434)
-          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message],!reverse [text]"),
+          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message], !reverse [text]"),
 message.channel.sendEmbed(embed);
+}
+catch (e) {
+return;
+}
 } 
+
+let random = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 
 
 if(command === "spam") {
@@ -300,13 +365,19 @@ if(command === "embed") {
           if (message.author.id !== config.ownerID) {
                   return;
 }
- const strx = args.slice(2).join(' ');
- if(!strx) {
-return message.channel.send("usage: !warn [question]");
-}
 let member = message.mentions.members.first();
 let server = message.guild.name
-member.send(`${member}, you have warned in ${server} because ${strx}`);
+let reason = args.slice(1).join(' ');
+if(!reason) { 
+message.channel.send("usage: !warn [user] [reason]");
+return;
+}
+console.log(`${member}`);
+console.log(`${reason}`);
+if(!member) { return; }
+
+
+member.send(`${member}, you have warned in ${server} because ${reason}`);
 }
 
 
