@@ -1,4 +1,4 @@
-//VERSION = 8.2
+//VERSION = 8.3
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -173,7 +173,7 @@ return;
 }
 embed = new Discord.RichEmbed()
           .setColor(0xed3434)
-          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message]"),
+          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message],!reverse [text]"),
 message.channel.sendEmbed(embed);
 } 
 
