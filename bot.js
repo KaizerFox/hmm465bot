@@ -1,4 +1,4 @@
-//VERSION = 8.4
+//VERSION = 8.5
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -33,7 +33,7 @@ r.on('finish', function() { file.close(console.log("done")) });
 
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
-client.user.setPresence({game:{name: "you",type:3}});
+client.user.setPresence({game:{name: "hacking into the mainframe",type:1}});
 console.log("loaded".green)
 
 });
