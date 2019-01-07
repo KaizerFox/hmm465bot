@@ -1,6 +1,8 @@
 # hmm465bot a project by Hmm465.
 
-# no explaination needed, figure out everything for your self, im not here to spoon feed a skid.
+# open run.bat, do node bot in console (make sure node.js is installed, and discord.js is installed)
+
+# if you need more help dm Hmm465#7106 on discord.
 
 # website: https://hmm465gamingyt.github.io/hmm465bot/
 
