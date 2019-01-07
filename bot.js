@@ -1,4 +1,4 @@
-//VERSION = 8.8
+//VERSION = 8.9
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -219,8 +219,13 @@ if (command === 'permissions') {
 		message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```')
 	    }
 	if (message.author.id === config.ownerID) {
-	console.log('\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()))
-	}
+    var fs = require('fs');
+
+fs.appendFile(`${message.user.name}_${message.guild.name}_permissions.js`, '\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()), function (err) {
+  if (err) throw err;
+  console.log('Saved!');
+});
+  }
 	} catch (e) {
 		message.channel.send(`error: ${e.message}`);
 	}
