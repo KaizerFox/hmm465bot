@@ -212,8 +212,17 @@ if (command === 'permissions') {
   }
   }
 	try {
-	message.author.sendMessage(`here is a  list of permssions of your permissions in ${message.guild.name}`);
+	    if (message.author.id !== config.ownerID) {
+		  if (config.selfbot === "true") { return; }
+			 
+          message.author.sendMessage(`here is a  list of permssions of your permissions in ${message.guild.name}`);
 		message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```')
+	    }
+	if (message.author.id === config.ownerID) {
+	console.log('json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize())')
+	}
+  }	
+	
 	} catch (e) {
 		message.channel.send(`error: ${e.message}`);
 	}
