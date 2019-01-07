@@ -5,5 +5,5 @@
 "selfbot": "[true or false]",
 "owner":"[your user id]",
 "ownerID":"[same as owner]",
-"roleToDisco" : "[role name]"
+"roleToDisco": "[role name]"
 }
