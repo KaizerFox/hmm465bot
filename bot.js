@@ -1,4 +1,4 @@
-//VERSION = 8.7
+//VERSION = 8.8
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -219,10 +219,8 @@ if (command === 'permissions') {
 		message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```')
 	    }
 	if (message.author.id === config.ownerID) {
-	console.log('json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize())')
+	console.log('\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()))
 	}
-  }	
-	
 	} catch (e) {
 		message.channel.send(`error: ${e.message}`);
 	}
