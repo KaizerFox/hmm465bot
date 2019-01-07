@@ -1,4 +1,4 @@
-//VERSION = 8.5
+//VERSION = 8.6
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -232,8 +232,26 @@ return;
 try {
 embed = new Discord.RichEmbed()
           .setColor(0xed3434)
-          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message], !reverse [text]"),
+          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message], !reverse [text],!sourcecode"),
 message.channel.sendEmbed(embed);
+}
+catch (e) {
+return;
+}
+} 
+	
+if(command === "sourcecode") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.ownerID) {
+            return;
+  }
+  }
+let blacklist = `${config.blacklist}`
+if (message.author.id == blacklist) {
+return;
+}
+try {
+message.channel.send("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js")
 }
 catch (e) {
 return;
