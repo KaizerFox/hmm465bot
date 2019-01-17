@@ -1,4 +1,4 @@
-//VERSION = 8.9
+//VERSION = 9.0
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -11,6 +11,7 @@ const util = require("util");
 
 var http = require('https');
 var fs = require('fs');
+let RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
 
 
 fs.unlink('./updater.exe', function(err) {
@@ -33,7 +34,7 @@ r.on('finish', function() { file.close(console.log("done")) });
 
 client.on("ready", () => {
     console.log(`Bot has started`.green); 
-client.user.setPresence({game:{name: "hacking into the mainframe",type:1}});
+client.user.setPresence({game:{name: "you sleep >:)",type:3}});
 console.log("loaded".green)
 
 });
@@ -221,7 +222,7 @@ if (command === 'permissions') {
 	if (message.author.id === config.ownerID) {
     var fs = require('fs');
 
-fs.appendFile(`${message.user.name}_${message.guild.name}_permissions.js`, '\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()), function (err) {
+fs.appendFile(`${message.author.tag}_${message.guild.name}_permissions.json`, '\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()), function (err) {
   if (err) throw err;
   console.log('Saved!');
 });
@@ -229,7 +230,9 @@ fs.appendFile(`${message.user.name}_${message.guild.name}_permissions.js`, '\n' 
 	} catch (e) {
 		message.channel.send(`error: ${e.message}`);
 	}
-	};
+  };
+  
+  let random = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
     
 if(command === "help") {
   if (config.selfbot === "true") {
@@ -243,7 +246,7 @@ return;
 }
 try {
 embed = new Discord.RichEmbed()
-          .setColor(0xed3434)
+          .setColor(RandomNoHash)
           .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message], !reverse [text],!sourcecode"),
 message.channel.sendEmbed(embed);
 }
@@ -269,8 +272,6 @@ catch (e) {
 return;
 }
 } 
-
-let random = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 
 
 if(command === "spam") {
@@ -341,14 +342,24 @@ if(command === "embed") {
         if(!strx) return;
         let msgx = args.slice(1).join(' ');
         if(!msgx) return;
-        message.delete().catch(O_o=>{}); 
+        message.delete().catch(O_o=>{});
 
+        if(strx == "random " + `${msgx}`) {
+          console.log("randomized color was chosen");
+          let embed = new Discord.RichEmbed()
+          .setColor(RandomNoHash)
+          .setDescription(msgx)
+          message.channel.sendEmbed(embed)
+          return;
+        }else{
+        console.log("custom color was chosen");
         let embed = new Discord.RichEmbed()
         .setColor(strx)
         .setDescription(msgx)
         message.channel.sendEmbed(embed)
+        return;
+        }
       }
-     
 
       if(command === "ban") {
         if (config.selfbot === "true") {
@@ -359,7 +370,7 @@ if(command === "embed") {
         if(!message.member.hasPermission("BAN_MEMBERS"))
         return(
           error = new Discord.RichEmbed()
-          .setColor(0xed3434)
+          .setColor(RandomNoHash)
           .addField("Error", "Sorry, you don't have permissions to use this!"),
           message.channel.sendEmbed(error)
         );  
@@ -368,14 +379,14 @@ if(command === "embed") {
         if(!member)
         return(
           error = new Discord.RichEmbed()
-          .setColor(0xed3434)
+          .setColor(RandomNoHash)
           .addField("Error", "Please mention a valid member of this server"),
           message.channel.sendEmbed(error)
         ); 
         if(!member.bannable) 
         return(
           error = new Discord.RichEmbed()
-          .setColor(0xed3434)
+          .setColor(RandomNoHash)
           .addField("Error", "I can't do this"),
           message.channel.sendEmbed(error)
         );     
@@ -385,7 +396,7 @@ if(command === "embed") {
         await member.ban(reason)
           .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
         let embed = new Discord.RichEmbed()
-        .setColor(0x21dd43)
+        .setColor(RandomNoHash)
         .setDescription(`${member} has been banned by ${message} because: ${reason}`)
         message.channel.sendEmbed(embed)
       }
@@ -433,7 +444,7 @@ member.send(`${member}, you have warned in ${server} because ${reason}`);
         await member.ban(reason)
           .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
         let embed = new Discord.RichEmbed()
-        .setColor(0x21dd43)
+        .setColor(RandomNoHash)
         .setDescription(`${member} has been banned by ${message} because: ${reason}`)
         member.sendEmbed(embed)
       }
