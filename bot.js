@@ -1,6 +1,6 @@
-//VERSION = 9.1
+//VERSION = 9.2
 
-//https://discordapp.com/oauth2/authorize?client_id=428334127339798529&scope=bot&permissions=2146958847
+//https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -276,7 +276,7 @@ if (message.author.id == blacklist) {
 return;
 }
 try {
-message.channel.send("https://discordapp.com/oauth2/authorize?client_id=428334127339798529&scope=bot&permissions=2146958847")
+message.channel.send("https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847")
 }
 catch (e) {
 return;
