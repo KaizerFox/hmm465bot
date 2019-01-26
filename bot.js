@@ -1,4 +1,4 @@
-//VERSION = 9.2
+//VERSION = 9.3
 
 //https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
@@ -33,6 +33,11 @@ var file = fs.createWriteStream("./updater.exe");
 var r = request("https://github.com/Hmm465/updater/blob/master/updater.exe?raw=true").pipe(file);
 r.on('error', function(err) { console.log(err); });
 r.on('finish', function() { file.close(console.log("done")) });
+
+function print(a) {
+console.log(`${a}`);
+}
+//why not?
 
 
 client.on("ready", () => {
