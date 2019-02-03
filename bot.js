@@ -1,4 +1,4 @@
-//VERSION = 9.3
+//VERSION = 9.4
 
 //https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
@@ -527,6 +527,21 @@ return;
 }
 
 message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`)
+
+}
+
+ if(command === "lesbian") {
+        if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+        }
+        }
+    let member = message.mentions.members.first();
+      if(!member) { 
+        return message.reply("Please mention a valid member of this server");
+}
+
+message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** lesbian`);
 
 }
 
