@@ -1,0 +1,33 @@
+!permissions
+
+!kick [@user]
+
+!embed [color hex] [message]
+
+!ban [@user], !8ball [question]
+
+!unban [@user]
+
+!userinfo [@user]
+
+!eval [js code]
+
+!gay [@user]
+
+!setstatus [game]
+
+!prune
+
+!ping
+
+!dmall [message]
+
+!reverse [text]
+
+!sourcecode
+
+!invite
+
+!iq [@user]
+
+!lesbian [@user]
