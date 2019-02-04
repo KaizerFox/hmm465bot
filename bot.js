@@ -1,4 +1,4 @@
-//VERSION = 9.4
+//VERSION = 9.5
 
 //https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
@@ -243,7 +243,7 @@ return;
 try {
 embed = new Discord.RichEmbed()
           .setColor(RandomNoHash)
-          .addField("!permissions, !kick [@user], !embed [color hex] [message], !ban [@user], !8ball [question], !unban [@user], !userinfo [@user], !eval [js code], !gay [@user], !setstatus [game], !prune, !ping, !dmall [message], !reverse [text],!sourcecode,!invite"),
+          .addField("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt"),
 message.channel.sendEmbed(embed);
 }
 catch (e) {
@@ -524,6 +524,11 @@ return;
     let member = message.mentions.members.first();
       if(!member) { 
         return message.reply("Please mention a valid member of this server");
+    }
+  
+
+if(`${member}` === "<@494253853915611168>") {
+return message.channel.send(`${member} is **0%** gay`);
 }
 
 message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`)
@@ -539,9 +544,41 @@ message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** g
     let member = message.mentions.members.first();
       if(!member) { 
         return message.reply("Please mention a valid member of this server");
-}
+      }
+
+if(`${member}` === "<@494253853915611168>") {
+        return message.channel.send(`${member} is **0%** lesbian`);
+  }
 
 message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** lesbian`);
+
+}
+
+if(command === "iq") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.ownerID) {
+            return;
+  }
+  }
+let member = message.mentions.members.first();
+if(!member) { 
+  return message.reply("Please mention a valid member of this server");
+}
+
+if(`${member}` === "<@494253853915611168>") {
+  return message.channel.send(`${member} has **200** iq`);
+}
+
+if(`${member}` === "<@255142697357017090>") {
+  return message.channel.send(`i cant calculate ${member}'s iq it's probably too high`);
+}
+
+if(`${member}` === "<@327517829899223049>") {
+  return message.channel.send(`${member} has **0** iq`);
+}
+
+
+message.channel.send(`${member} has **${Math.floor(Math.random() * 100) + 1}** iq`);
 
 }
 
