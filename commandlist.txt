@@ -1,26 +1,16 @@
-!permissions
+=USABLE BY ANYONE:+
 
-!kick [@user]
+!permissions
 
 !embed [color hex] [message]
 
-!ban [@user], !8ball [question]
-
-!unban [@user]
+!8ball [question]
 
 !userinfo [@user]
 
-!eval [js code]
-
 !gay [@user]
 
-!setstatus [game]
-
-!prune
-
 !ping
-
-!dmall [message]
 
 !reverse [text]
 
@@ -31,3 +21,20 @@
 !iq [@user]
 
 !lesbian [@user]
+
+=USABLE BY ANYONE WITH ADMIN PERM:=
+!kick [@user]
+
+!ban [@user]
+
+!unban [@user]
+
+!prune
+
+
+=BOT's OWNER ONLY:=
+!dmall [message]
+
+!setstatus [game]
+
+!eval [js code]
