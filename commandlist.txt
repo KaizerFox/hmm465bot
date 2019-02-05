@@ -29,12 +29,12 @@
 
 !unban [@user]
 
-!prune
-
-
 =BOT's OWNER ONLY:=
 !dmall [message]
 
 !setstatus [game]
 
 !eval [js code]
+
+!prune
+
