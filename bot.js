@@ -1,4 +1,4 @@
-//VERSION = 9.5
+//VERSION = 9.6
 
 //https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
@@ -199,6 +199,13 @@ sleep(100);
       "yes",
       "no",
       "maybe"
+    ]
+
+    
+    var infec = [
+      "has been infected",
+      "ran away",
+      "took your needle, and infected **__you__**"
     ]
     if(command === "ping") {
       if (config.selfbot === "true") {
@@ -453,6 +460,24 @@ return message.channel.send("usage: !8ball [question]");
  message.channel.send(fortunes[Math.floor(Math.random() * fortunes.length)]);
       }
 
+if(command === "infect") {
+        if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+        }
+        }
+      let member = message.mentions.members.first();
+     if(!member) {
+    return message.channel.send("usage: !infect [@user]");
+    }
+
+    if(`${member}` === `<@494253853915611168>`) {
+      return message.channel.send(`${member} cannot be infected`);
+    }
+
+     message.channel.send(`${member} ` + infec[Math.floor(Math.random() * infec.length)]);
+    }
+
 
      if(command === "unban") {
       if (config.selfbot === "true") {
@@ -575,6 +600,10 @@ if(`${member}` === "<@255142697357017090>") {
 
 if(`${member}` === "<@327517829899223049>") {
   return message.channel.send(`${member} has **0** iq`);
+}
+
+if(`${member}` === "<@266686545090707456>") {
+  return message.channel.send(`${member} has **[OVERFLOW ERROR]** iq`);
 }
 
 
