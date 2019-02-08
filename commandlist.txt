@@ -22,6 +22,8 @@
 
 !lesbian [@user]
 
+!infect [@user]
+
 =USABLE BY ANYONE WITH ADMIN PERM:=
 !kick [@user]
 
