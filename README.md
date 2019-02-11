@@ -1,7 +1,7 @@
 # = INFO: =
 
 ```asciidoc
-= [readme version: 3.5] =
+= [readme version: 3.6] =
 
 = hmm465bot a project by Hmm465. =
 
@@ -9,7 +9,7 @@
 
 = if you need more help dm Hmm465#6560 on discord. =
 
-= the description explains how to use the updater. =
+= the description of the updater (in links) explains how to use the updater. =
 ```
 
 # = LINKS: =
