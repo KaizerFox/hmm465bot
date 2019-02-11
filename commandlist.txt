@@ -1,3 +1,5 @@
+[COMMAND LIST VERSION: 3.0]
+
 =USABLE BY ANYONE:+
 
 !permissions
@@ -38,5 +40,6 @@
 
 !eval [js code]
 
+!lua [lua code]
 !prune
 
