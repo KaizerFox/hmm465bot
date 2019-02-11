@@ -1,7 +1,7 @@
 # = INFO: =
 
 ```asciidoc
-= [readme version: 3.1] =
+= [readme version: 3.5] =
 
 = hmm465bot a project by Hmm465. =
 
