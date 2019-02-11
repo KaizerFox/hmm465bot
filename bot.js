@@ -1,4 +1,6 @@
-//VERSION = 9.8
+//VERSION = 9.9
+
+//maybe big update at 10.0? idk.
 
 //https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
@@ -25,14 +27,30 @@ fs.unlink('./updater.exe', function(err) {
         // other errors, e.g. maybe we don't have enough permission
         console.error("Error occurred while trying to remove file");
     } else {
-        console.info(`removed`);
+//continue
     }
 });
 const request = require("request")
 var file = fs.createWriteStream("./updater.exe");
 var r = request("https://github.com/Hmm465/updater/blob/master/updater.exe?raw=true").pipe(file);
 r.on('error', function(err) { console.log(err); });
-r.on('finish', function() { file.close(console.log("done")) });
+r.on('finish', function() { file.close(sleep(1)); });
+
+fs.unlink('./commandlist.txt', function(err) {
+    if(err && err.code == 'ENOENT') {
+        // file doens't exist
+        console.info("File doesn't exist, won't remove it.");
+    } else if (err) {
+        // other errors, e.g. maybe we don't have enough permission
+        console.error("Error occurred while trying to remove file");
+    } else {
+//continue
+    }
+});
+var file = fs.createWriteStream("./commandlist.txt");
+var r = request("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt").pipe(file);
+r.on('error', function(err) { console.log(err); });
+r.on('finish', function() { file.close(sleep(1)); });
 
 function print(a) {
 console.log(`${a}`);
