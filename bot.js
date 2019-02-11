@@ -1,4 +1,4 @@
-//VERSION = 9.9a
+//VERSION = 9.9b
 
 //maybe big update at 10.0? idk.
 
@@ -571,8 +571,21 @@ return message.channel.send(`<@${message.author.id}> you cannot do this sense it
 
 var errored = false;
 
-function ExecuteLua() {
-  var dat = __dirname.tostring();
+function ExecuteLua(a) {
+  if(a === true) {
+    var dat = __dirname;
+    const util = require('util');
+    const exec = util.promisify(require('child_process').exec);
+    
+    async function ls(b) {
+      const { stdout, stderr } = await exec(`${b}`);
+      return message.channel.send(`\`\`\`lua\n${stdout}\n\`\`\``);
+    }
+    sleep(1);
+    return ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/RandomString.lua`);
+  }
+  if(a !== true) {
+  var dat = __dirname;
   const util = require('util');
   const exec = util.promisify(require('child_process').exec);
   
@@ -583,9 +596,60 @@ function ExecuteLua() {
   sleep(1);
   return ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/exe.lua`);
 }
+}
 
   try {
   const code = args.join(" ");
+
+
+  if(`${code}` == "RandomString()") {
+    let cod = `
+local letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+
+function assing_value(number)
+	if number <= 26 then
+		number = letters[number]
+		else
+		number = number - 27
+	end
+	return number
+end
+
+function create_id(length)
+	local id = ""
+	if length > 0 then
+		for i = 1, length do
+			local number = math.random(1, 36)
+			id = id .. assing_value(number)
+		end
+	end
+	return id
+end
+
+print(create_id(20))
+`
+var fs = require('fs');
+
+fs.writeFile('RandomString.lua', `${cod}`, function (err) {
+  if (err) {
+    console.log(`${error}`);
+    fs.appendFile('RandomString.lua', `${cod}`, function (err) {
+      if (err) {
+        console.log(`${err}`);
+        var errored = true;
+    }
+    if(errored !== true) {
+      sleep(1);
+    }
+      sleep(1);
+     return ExecuteLua(true);
+    });
+  }
+  return ExecuteLua(true);
+});
+return;
+}
+
 
   var fs = require('fs');
 
