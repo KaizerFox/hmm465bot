@@ -1,4 +1,4 @@
-//VERSION = 9.9
+//VERSION = 9.9a
 
 //maybe big update at 10.0? idk.
 
@@ -572,6 +572,7 @@ return message.channel.send(`<@${message.author.id}> you cannot do this sense it
 var errored = false;
 
 function ExecuteLua() {
+  var dat = __dirname.tostring();
   const util = require('util');
   const exec = util.promisify(require('child_process').exec);
   
@@ -580,7 +581,7 @@ function ExecuteLua() {
     return message.channel.send(`\`\`\`lua\n${stdout}\n\`\`\``);
   }
   sleep(1);
-  return ls("java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua C:/Users/hmm46/Downloads/hmm465bot-master/hmm465bot-master/exe.lua");
+  return ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/exe.lua`);
 }
 
   try {
@@ -604,7 +605,6 @@ function ExecuteLua() {
        return ExecuteLua();
       });
     }
-    console.log('Replaced!');
     return ExecuteLua();
   });
   }
