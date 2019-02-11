@@ -1,4 +1,4 @@
-//VERSION = 9.7
+//VERSION = 9.8
 
 //https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
 
@@ -10,7 +10,6 @@ const colors = require('colors');
 const async = require("async");
 const asyncio = require("asyncio");
 const util = require("util");
-const readline = require('readline');
 
 var http = require('https');
 var fs = require('fs');
@@ -39,11 +38,6 @@ function print(a) {
 console.log(`${a}`);
 }
 //why not?
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 
 client.on("ready", () => {
@@ -555,41 +549,52 @@ return;
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
 return message.channel.send(`<@${message.author.id}> you cannot do this sense its in beta`);
-}     
+}
+
+var errored = false;
+
+function ExecuteLua() {
+  const util = require('util');
+  const exec = util.promisify(require('child_process').exec);
+  
+  async function ls(b) {
+    const { stdout, stderr } = await exec(`${b}`);
+    return message.channel.send(`\`\`\`lua\n${stdout}\n\`\`\``);
+  }
+  sleep(1);
+  return ls("java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua C:/Users/hmm46/Downloads/hmm465bot-master/hmm465bot-master/exe.lua");
+}
 
   try {
   const code = args.join(" ");
 
   var fs = require('fs');
 
-  fs.unlink('exe.lua', function (err) {
-    if (err) {console.log(`${err}`);}
-    console.log('File deleted!');
-    sleep(1);
-  });
-
-  function ExecuteLua() {
-    const util = require('util');
-    const exec = util.promisify(require('child_process').exec);
-    
-    async function ls(b) {
-      const { stdout, stderr } = await exec(`${b}`);
-      return message.channel.send(`\`\`\`lua\n${stdout}\n\`\`\``);
+  fs.writeFile('exe.lua', `${code}`, function (err) {
+    if (err) {
+      console.log(`${error}`);
+      fs.appendFile('exe.lua', `${code}`, function (err) {
+        if (err) {
+          console.log(`${err}`);
+          var errored = true;
+      }
+      if(errored !== true) {
+        console.log('Saved!');
+        sleep(1);
+      }
+        sleep(1);
+       return ExecuteLua();
+      });
     }
-    ls("java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua C:/Users/hmm46/Downloads/hmm465bot-master/hmm465bot-master/exe.lua");
-  }
-
-  fs.appendFile('exe.lua', `${code}`, function (err) {
-    if (err) {console.log(`${err}`);}
-    console.log('Saved!');
-    sleep(1);
+    console.log('Replaced!');
     return ExecuteLua();
   });
+  }
+  catch(e){
+    return console.log(`${e.message}`);
+  }
 }
-catch(e){
-return;
-}
-}
+
 
 
 
