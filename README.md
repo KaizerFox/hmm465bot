@@ -12,15 +12,15 @@
 = the description explains how to use the updater. =
 ```
 
-## = LINKS: =
+# = LINKS: =
 
-### [website](https://hmm465.github.io/hmm465bot/)
+## [website](https://hmm465.github.io/hmm465bot/)
 
-### [github](https://github.com/Hmm465/hmm465bot)
+## [github](https://github.com/Hmm465/hmm465bot)
 
-### [discord](https://hmm465.weebly.com/discord.html)
+## [discord](https://hmm465.weebly.com/discord.html)
 
-### [command list](https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt)
+## [command list](https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt)
 
-### [updater](https://github.com/Hmm465/hmm465bot/releases)
+## [updater](https://github.com/Hmm465/hmm465bot/releases)
 
