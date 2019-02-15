@@ -1,8 +1,8 @@
-//VERSION = 9.9b
+//VERSION = 9.9c
 
 //maybe big update at 10.0? idk.
 
-//https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847
+//https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -306,7 +306,7 @@ if (message.author.id == blacklist) {
 return;
 }
 try {
-message.channel.send("https://discordapp.com/oauth2/authorize?client_id=536694392984174592&scope=bot&permissions=2146958847")
+message.channel.send("https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847")
 }
 catch (e) {
 return;
