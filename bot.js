@@ -1,4 +1,4 @@
-//VERSION = 9.9d
+//VERSION = 9.9e
 
 //maybe big update at 10.0? idk.
 
@@ -12,6 +12,15 @@ const colors = require('colors');
 const async = require("async");
 const asyncio = require("asyncio");
 const util = require("util");
+const io = require('@pm2/io')
+
+io.init({
+  metrics: {
+    network: {
+      ports: true
+    }
+  }
+});
 
 var http = require('https');
 var fs = require('fs');
@@ -545,7 +554,7 @@ return;
     }
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
-return message.channel.send(`<@${message.author.id}> you cannot do this sense its in beta`);
+return;
 }
 
 var errored = false;
@@ -557,8 +566,16 @@ async function ExecuteLua(a) {
     const exec = util.promisify(require('child_process').exec);
     
     async function ls(b) {
-      const { stdout, stderr } = await exec(`${b}`);
-      return await message.channel.send(`\`\`\`lua\n${stdout}\n\`\`\``);
+      if(`${stdout}` == "") {   
+        if(`${stderr}` !== "" ) {
+          output = stderr;
+        } else {
+          output = "no output";
+        }
+       } else {
+        output = stdout;
+       }
+      return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
     }
     await sleep(1);
     return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/RandomString.lua`);
@@ -570,7 +587,16 @@ async function ExecuteLua(a) {
   
   async function ls(b) {
     const { stdout, stderr } = await exec(`${b}`);
-    return await message.channel.send(`\`\`\`lua\n${stdout}\n\`\`\``);
+    if(`${stdout}` == "") {   
+      if(`${stderr}` !== "" ) {
+        output = stderr;
+      } else {
+        output = "no output";
+      }
+     } else {
+      output = stdout;
+     }
+    return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
   }
   await sleep(1);
   return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/exe.lua`);
