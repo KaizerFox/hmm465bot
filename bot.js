@@ -1,4 +1,4 @@
-//VERSION = 9.9e
+//VERSION = 9.9f
 
 //maybe big update at 10.0? idk.
 
@@ -567,7 +567,7 @@ async function ExecuteLua(a) {
     
     async function ls(b) {
       if(`${stdout}` == "") {   
-        if(`${stderr}` !== "" ) {
+        if(`${stderr}` !== "") {
           output = stderr;
         } else {
           output = "no output";
@@ -575,6 +575,9 @@ async function ExecuteLua(a) {
        } else {
         output = stdout;
        }
+       if(`${stdout}` == "" | `${stderr}` == ""){
+        output = "no output";
+      }
       return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
     }
     await sleep(1);
@@ -588,7 +591,7 @@ async function ExecuteLua(a) {
   async function ls(b) {
     const { stdout, stderr } = await exec(`${b}`);
     if(`${stdout}` == "") {   
-      if(`${stderr}` !== "" ) {
+      if(`${stderr}` !== "") {
         output = stderr;
       } else {
         output = "no output";
@@ -596,6 +599,9 @@ async function ExecuteLua(a) {
      } else {
       output = stdout;
      }
+     if(`${stdout}` == "" | `${stderr}` == ""){
+      output = "no output";
+    }
     return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
   }
   await sleep(1);
