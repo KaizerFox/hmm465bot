@@ -1,4 +1,4 @@
-//VERSION = 9.9f
+//VERSION = 9.9g
 
 //maybe big update at 10.0? idk.
 
@@ -175,14 +175,16 @@ return await console.log(`couldnt reverse because ${e.message}`);
 }
 }
 
-function discoRole() {
+function discoRole(a) {
   let random = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-  let roles_conf = config.roleToDisco
-  roles_conf.forEach(async(role) => {
-    let role_pass = message.guild.roles.find(async(role_s) => await role_s.name === "Furry");
-    role_pass.edit({color: random}).catch(async(e) => {
-      return;
+  const roles = `${a}`
+  message.guild.roles.forEach(async(role) => {
+    if(role.name == `${a}`) {
+    let theRole = await message.guild.roles.find(role => role.name === `${a}`);
+       await theRole.edit({color: random}).catch(async() => {
+      return await message.channel.send(`couldn't find ${a}, role names are case sensitive.`)
     });
+  }
   });
 }
 
@@ -191,7 +193,11 @@ if(command === "discorole") {
   if (message.author.id === config.blacklist){
         return;
       }
-  setInterval(async() => { await discoRole(); }, 10000);
+    const strx = args.join(" ");
+      if(!strx) return;
+
+  await message.channel.send(`discoing role '${strx}'`);
+  return await setInterval(async() => { await discoRole(`${strx}`); }, 10000);
 }
 
 let ownerID = `${config.owner}` 
