@@ -1,4 +1,4 @@
-//VERSION = 9.9h
+//VERSION = 9.9i
 
 //maybe big update at 10.0? idk.
 
@@ -591,6 +591,7 @@ async function ExecuteLua(a) {
     const exec = util.promisify(require('child_process').exec);
     
     async function ls(b) {
+      const { stdout, stderr } = await exec(`${b}`);
       if(`${stdout}` == "") {   
         if(`${stderr}` !== "") {
           output = stderr;
