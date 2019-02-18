@@ -1,4 +1,4 @@
-//VERSION = 9.9g
+//VERSION = 9.9h
 
 //maybe big update at 10.0? idk.
 
@@ -306,6 +306,25 @@ return;
 }
 } 
 
+if(command === "say") {
+  let ownerID = `${config.owner}`
+  if (message.author.id !== ownerID) {
+  return;
+  }
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.ownerID) {
+            return;
+  }
+  }
+  message.delete();
+    const strx = args.join(" ");
+          if(!strx) return;
+  
+  await message.channel.startTyping(3); 
+  await message.channel.send(`${strx}`);
+  await message.channel.stopTyping(true);
+}
+
 if(command === "spam") {
 let ownerID = `${config.owner}`
 if (message.author.id !== ownerID) {
@@ -521,11 +540,11 @@ if(command === "infect") {
          return await message.channel.send(`name: ${User}, id: ${ID}, Join Date: ${JoinedAt}, Highest role: ${HighestRole}, Avatar: ${Avatar}`);
      }
      
-  async function clean(text) {
+  function clean(text) {
   if (typeof(text) === "string")
-    return await text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
   else
-    return await text;
+    return text;
 }
   
       if(command === "eval") {
@@ -540,14 +559,14 @@ return;
 }     
       try {
       const code = args.join(" ");
-      let evaled = await eval(code);
+      let evaled = eval(code);
 
       if (typeof evaled !== "string")
         evaled = require("util").inspect(evaled);
 
-      await message.channel.send(clean(evaled), {code:"xl"});
+     message.channel.send(clean(evaled), {code:"xl"});
     } catch (err) {
-      await message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
     }
   }
 
@@ -576,13 +595,13 @@ async function ExecuteLua(a) {
         if(`${stderr}` !== "") {
           output = stderr;
         } else {
-          output = "no output";
+          output = "output: " + stdout;
         }
        } else {
-        output = stdout;
+        output = "output: " + stdout;
        }
        if(`${stdout}` == "" | `${stderr}` == ""){
-        output = "no output";
+        output = "output: " + stdout + "\n error: " + stderr;
       }
       return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
     }
@@ -600,13 +619,13 @@ async function ExecuteLua(a) {
       if(`${stderr}` !== "") {
         output = stderr;
       } else {
-        output = "no output";
+        output = "output: " + stdout;
       }
      } else {
-      output = stdout;
+      output = "output: " + stdout;
      }
      if(`${stdout}` == "" | `${stderr}` == ""){
-      output = "no output";
+      output = "output: " + stdout + "\n error: " + stderr;
     }
     return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
   }
