@@ -1,4 +1,4 @@
-//VERSION = 9.9i
+//VERSION = 9.9j
 
 //maybe big update at 10.0? idk.
 
@@ -604,7 +604,7 @@ async function ExecuteLua(a) {
        if(`${stdout}` == "" | `${stderr}` == ""){
         output = "output: " + stdout + "\n error: " + stderr;
       }
-      return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
+      return await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
     }
     await sleep(1);
     return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/RandomString.lua`);
@@ -628,7 +628,7 @@ async function ExecuteLua(a) {
      if(`${stdout}` == "" | `${stderr}` == ""){
       output = "output: " + stdout + "\n error: " + stderr;
     }
-    return await message.channel.send(`\`\`\`lua\n${output}\n\`\`\``);
+    return await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
   }
   await sleep(1);
   return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/exe.lua`);
@@ -636,8 +636,9 @@ async function ExecuteLua(a) {
 }
 
   try {
-  const code = args.join(" ");
-
+  let code = args.join(" ");
+   
+  let low = code.toLowerCase();
 
   if(`${code}` == "RandomString()") {
     let cod = `
@@ -687,6 +688,11 @@ fs.writeFile('RandomString.lua', `${cod}`, function (err) {
 return;
 }
 
+
+  if(low.includes("os.execute") | low.includes("os.time") | low.includes("os.date") | low.includes("os.clock") | low.includes("os.difftime") | low.includes("os.getenv") 
+  | low.includes("os.exit") | low.includes("os.exit") | low.includes("os.remove")  | low.includes("os.rename") | low.includes("os.setlocale") ) {
+   code = "print('nope')";
+  }
 
   var fs = require('fs');
 
