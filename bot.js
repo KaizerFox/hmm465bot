@@ -1,4 +1,4 @@
-//VERSION = 9.9j
+//VERSION = 9.9k
 
 //maybe big update at 10.0? idk.
 
@@ -690,8 +690,10 @@ return;
 
 
   if(low.includes("os.execute") | low.includes("os.time") | low.includes("os.date") | low.includes("os.clock") | low.includes("os.difftime") | low.includes("os.getenv") 
-  | low.includes("os.exit") | low.includes("os.exit") | low.includes("os.remove")  | low.includes("os.rename") | low.includes("os.setlocale") ) {
-   code = "print('nope')";
+  | low.includes("os.exit") | low.includes("os.remove")  | low.includes("os.rename") | low.includes("os.setlocale") | low.includes("exe") | low.includes("LoadLibrary") | low.includes("bininsert")
+   | low.includes("binsearch") | low.includes("io") | low.includes("file:") | low.includes("platform") | low.includes("require") | low.includes("getfenv") | low.includes("import") | low.includes("setfenv") | low.includes("debug")
+   | low.includes("module") | low.includes("package") | low.includes("loadstring") | low.includes("while true do")) {
+   code = "print('a function you did is blacklisted, contact Hmm465 if you have any questions')";
   }
 
   var fs = require('fs');
