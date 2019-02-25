@@ -1,4 +1,4 @@
-//VERSION = 9.9k
+//VERSION = 9.9L
 
 //maybe big update at 10.0? idk.
 
@@ -360,21 +360,30 @@ if(command === "kick") {
             return;
   }
   }
-        if(!message.member.hasPermission("KICK_MEMBERS"))
-        return await(
-          await message.channel.send("Sorry, you don't have permissions to use this!")
-        );         
+ 
+  if (message.author.id !== config.ownerID) {
+        if(!message.member.hasPermission("KICK_MEMBERS")) {
+          return await message.channel.send("Sorry, you don't have permissions to use this!");
+        }
+      }
+
         let member = message.mentions.members.first();
-        if(!member)
-        return await(
-          await message.channel.send("Please mention a valid member of this server")
-        ); 
-        if(!member.kickable) 
-        return await(
-          message.channel.send("member is not kickable")
-        );     
+      
+
+        if(!member) {
+          return await message.channel.send("Please mention a valid member of this server");
+        }
+
+        if(`${member.id}` === `${config.owner}`)   {
+          return await message.channel.send("you can't kick the bot owner.");
+        }  
+        
+        if(!member.kickable) {
+        return await message.channel.send("member is not kickable");
+        }
+
         let reason = args.slice(1).join(' ');
-        if(!reason) reason = "No reason provided";
+        if(!reason) {reason = "No reason provided";}
         
         
         await member.kick(reason)
@@ -418,31 +427,40 @@ if(command === "embed") {
                   return;
         }
         }
-        if(!message.member.hasPermission("BAN_MEMBERS"))
-        return await(
+        if (message.author.id !== config.ownerID) {
+        if(!message.member.hasPermission("BAN_MEMBERS")) {
           error = new Discord.RichEmbed()
           .setColor(RandomNoHash)
           .addField("Error", "Sorry, you don't have permissions to use this!"),
           await message.channel.sendEmbed(error)
-        );  
+          return;
+        }
+      }
 
         let member = message.mentions.members.first();
-        if(!member)
-        return await(
+        if(!member)  { 
           error = new Discord.RichEmbed()
           .setColor("#a00ff5")
           .addField("Error", "Please mention a valid member of this server"),
           await message.channel.sendEmbed(error)
-        ); 
-        if(!member.bannable) 
-        return await(
+          return;
+        }
+
+        if(`${member.id}` === `${config.owner}`)   {
+          return await message.channel.send("you can't ban the bot owner.");
+        }  
+
+
+        if(!member.bannable) {
           error = new Discord.RichEmbed()
           .setColor(RandomNoHash)
           .addField("Error", "I can't do this"),
           await message.channel.sendEmbed(error)
-        );     
+          return;
+        }
+
         let reason = args.slice(1).join(' ');
-        if(!reason) reason = "No reason provided";
+        if(!reason) {reason = "No reason provided";}
         
         await member.ban(reason)
           .catch(async(error) => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
@@ -458,6 +476,14 @@ if(command === "embed") {
           if (message.author.id !== config.ownerID) {
                   return;
 }
+      }
+
+if (message.author.id !== config.ownerID) {
+if(!message.member.hasPermission("ADMINISTRATOR")) {
+ return await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
+}
+}
+
 let member = message.mentions.members.first();
 let server = message.guild.name
 let reason = args.slice(1).join(' ');
@@ -467,16 +493,21 @@ return;
 }
 console.log(`${member}`);
 console.log(`${reason}`);
-if(!member) { return; }
+
+if (message.author.id !== config.ownerID) {
+if(member.hasPermission("ADMINISTRATOR")) {
+  return await message.channel.send(`<@${member.id}> has admin, you can't warn an admin`);
+ }
+}
 
 try {
-member.send(`${member}, you have warned in ${server} because ${reason}`);
+await member.send(`${member}, you have been warned in ${server} because ${reason}`);
+return await message.channel.send(`successfully warned <@${member.id}> for ${reason}`);
 } catch (e) {
-return;
+await message.channel.send(`couldn't warn user because of ${e}`);
+return await console.log(`${e}`);
 }
-
 }
- }
       
   if(command === "8ball") {
     if (config.selfbot === "true") {
@@ -516,13 +547,16 @@ if(command === "infect") {
                 return;
       }
       }
+      if (message.author.id !== config.ownerID) {
         if(!message.member.hasPermission("ADMINISTRATOR"))
         return await(
           error = new Discord.RichEmbed()
           .setColor(0xed3434)
           .addField("Error", "Sorry, you don't have permissions to use this!"),
           await message.channel.sendEmbed(error)
-        );    
+        );   
+      }
+
         const ied = args.join(" ");
         await message.guild.unban(ied);
         return await message.channel.send(`<@${ied}> was unbanned`);
@@ -692,7 +726,7 @@ return;
   if(low.includes("os.execute") | low.includes("os.time") | low.includes("os.date") | low.includes("os.clock") | low.includes("os.difftime") | low.includes("os.getenv") 
   | low.includes("os.exit") | low.includes("os.remove")  | low.includes("os.rename") | low.includes("os.setlocale") | low.includes("exe") | low.includes("LoadLibrary") | low.includes("bininsert")
    | low.includes("binsearch") | low.includes("io") | low.includes("file:") | low.includes("platform") | low.includes("require") | low.includes("getfenv") | low.includes("import") | low.includes("setfenv") | low.includes("debug")
-   | low.includes("module") | low.includes("package") | low.includes("loadstring") | low.includes("while true do")) {
+   | low.includes("module") | low.includes("package") | low.includes("loadstring") | low.includes("while true do") | low.includes("repeat")) {
    code = "print('a function you did is blacklisted, contact Hmm465 if you have any questions')";
   }
 
