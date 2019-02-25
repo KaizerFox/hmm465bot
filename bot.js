@@ -1,6 +1,4 @@
-//VERSION = 9.9L
-
-//maybe big update at 10.0? idk.
+//VERSION = 10.0
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -776,6 +774,27 @@ return await message.channel.send(`${member} is **0%** gay`);
 }
 
 return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`)
+
+}
+
+
+if(command === "furry") {
+        if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+        }
+        }
+    let member = message.mentions.members.first();
+      if(!member) { 
+        return await message.reply("Please mention a valid member of this server");
+    }
+  
+
+if(`${member}` === "<@494253853915611168>") {
+return await message.channel.send(`${member} is **100%** a furry`);
+}
+
+return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** a furry`);
 
 }
 
