@@ -1,4 +1,4 @@
-//VERSION = 10.1
+//VERSION = 10.2
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -790,10 +790,10 @@ if(command === "furry") {
     }
   
 if(`${member}` === `<@${config.owner}>`) {
-return await message.channel.send(`${member} is **100%** a furry`);
+return await message.channel.send(`${member} is **100%** of a furry`);
 }
 
-return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** a furry`);
+return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** of a furry`);
 
 }
 
