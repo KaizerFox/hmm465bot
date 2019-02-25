@@ -1,4 +1,4 @@
-[COMMAND LIST VERSION: 3.2]
+[COMMAND LIST VERSION: 3.3]
 
 =USABLE BY ANYONE:=
 
@@ -25,6 +25,8 @@
 !lesbian [@user]
 
 !infect [@user]
+
+!furry [@user]
 
 =USABLE BY ANYONE WITH ADMIN PERM:=
 !kick [@user]
