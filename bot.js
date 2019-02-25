@@ -1,4 +1,4 @@
-//VERSION = 10.0
+//VERSION = 10.1
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -769,7 +769,7 @@ return;
     }
   
 
-if(`${member}` === "<@494253853915611168>") {
+if(`${member}` === `<@${config.owner}>`) {
 return await message.channel.send(`${member} is **0%** gay`);
 }
 
@@ -789,8 +789,7 @@ if(command === "furry") {
         return await message.reply("Please mention a valid member of this server");
     }
   
-
-if(`${member}` === "<@494253853915611168>") {
+if(`${member}` === `<@${config.owner}>`) {
 return await message.channel.send(`${member} is **100%** a furry`);
 }
 
@@ -809,7 +808,7 @@ return await message.channel.send(`${member} is **${Math.floor(Math.random() * 1
         return await message.reply("Please mention a valid member of this server");
       }
 
-if(`${member}` === "<@494253853915611168>") {
+if(`${member}` === `<@${config.owner}>`) {
         return await message.channel.send(`${member} is **0%** lesbian`);
   }
 
@@ -828,7 +827,7 @@ if(!member) {
   return await message.reply("Please mention a valid member of this server");
 }
 
-if(`${member}` === "<@494253853915611168>") {
+if(`${member}` === `<@${config.owner}>`) {
   return await message.channel.send(`${member} has **200** iq`);
 }
 
