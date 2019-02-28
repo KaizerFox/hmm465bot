@@ -1,4 +1,4 @@
-//VERSION = 10.2
+//VERSION = 10.3
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -10,7 +10,8 @@ const colors = require('colors');
 const async = require("async");
 const asyncio = require("asyncio");
 const util = require("util");
-const io = require('@pm2/io')
+const io = require('@pm2/io');
+const yt = require('ytdl-core');
 
 io.init({
   metrics: {
@@ -70,7 +71,6 @@ console.log("loaded".green)
       }
 
 client.on('message', async (msg) => {
-
 let ownerID = `${config.owner}`
 let blacklist = `${config.blacklist}`
 
@@ -112,7 +112,125 @@ console.log(`Error while deleting: ${e.message}`.red);
 return;
 }
 }
+
 });
+
+if(`${config.MusicCommands}` === "true") {
+const tokens = config;
+let queue = {};
+let link = new Map();
+
+const commands = {
+	'play': async(msg) => {
+		if (queue[msg.guild.id] === undefined) return await msg.channel.sendMessage(`Add some songs to the queue first with ${config.prefix}add`);
+		if (!msg.guild.voiceConnection) return await commands.join(msg).then(async() => await commands.play(msg));
+		if (queue[msg.guild.id].playing) return await msg.channel.sendMessage('Already Playing');
+		let dispatcher;
+		 queue[msg.guild.id].playing = true;
+
+    console.log(queue && link.entries().next().value);
+		(async function play(song) {
+			console.log(song);
+			if (song === undefined && link.entries().next().value === '' || undefined) return await msg.channel.sendMessage('Queue is empty').then(async() => {
+				queue[msg.guild.id].playing = false;
+				await msg.member.voiceChannel.leave();
+      });
+
+      console.log(`${song}`);
+      
+      let e = link.entries().next().value;
+      let sl = e.slice(0, -1);
+      console.log(`${sl}`);
+      let ent_st = `${sl}`;
+  
+      dispatcher = await msg.guild.voiceConnection.playStream(yt(ent_st, {audioonly: true }), {passes :  1});
+			let collector = await msg.channel.createCollector(async(m) => await m);
+			collector.on('message', async(m) => {
+        if (m.content.startsWith(tokens.prefix + 'pause')) {
+					await msg.channel.sendMessage('paused').then(async() => {await dispatcher.pause();});
+				} else if (m.content.startsWith(tokens.prefix + 'resume')){
+					await msg.channel.sendMessage('resumed').then(async() => {await dispatcher.resume();});
+				} else if (m.content.startsWith(tokens.prefix + 'skip')){
+					await msg.channel.sendMessage('skipped').then(async() => {await dispatcher.end();});
+				} else if (m.content.startsWith('volume+')){
+					if (Math.round(dispatcher.volume*50) >= 100) return await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+					await dispatcher.setVolume(Math.min((dispatcher.volume*50 + (2*(m.content.split('+').length-1)))/50,2));
+					await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+				} else if (m.content.startsWith('volume-')){
+					if (Math.round(dispatcher.volume*50) <= 0) return await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+					await dispatcher.setVolume(Math.max((dispatcher.volume*50 - (2*(m.content.split('-').length-1)))/50,0));
+					await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+				} else if (m.content.startsWith(tokens.prefix + 'time')){
+					await msg.channel.sendMessage(`time: ${Math.floor(dispatcher.time / 60000)}:${Math.floor((dispatcher.time % 60000)/1000) <10 ? '0'+Math.floor((dispatcher.time % 60000)/1000) : Math.floor((dispatcher.time % 60000)/1000)}`);
+				}
+			});
+			dispatcher.on('end', async() => {
+        await collector.stop();
+        await link.clear();
+				await play(queue[msg.guild.id].songs.shift());
+			});
+			dispatcher.on('error', async(err) => {
+				return await msg.channel.sendMessage('error: ' + err).then(async() => {
+          await collector.stop();
+          await link.clear();
+					await play(queue[msg.guild.id].songs.shift());
+				});
+			});
+		})(queue[msg.guild.id].songs.shift());
+	},
+	'join': async(msg) => {
+		return await new Promise(async(resolve, reject) => {
+			const voiceChannel = await msg.member.voiceChannel;
+			if (!voiceChannel || voiceChannel.type !== 'voice') return msg.reply('I couldn\'t connect to your voice channel...');
+			await voiceChannel.join().then(async(connection) => await resolve(connection)).catch(async(err) => await reject(err));
+		});
+	},
+	'add': async(msg) => {
+		let url = await msg.content.split(' ')[1];
+		if (url == '' || url === undefined) return await msg.channel.sendMessage(`You must add a YouTube video url, or id after ${tokens.prefix}add`);
+		await yt.getInfo(url, async(err, info) => {
+			if(err) {return await msg.channel.sendMessage('Invalid YouTube Link: ' + err);}
+			if (!queue.hasOwnProperty(msg.guild.id)) queue[msg.guild.id] = {}, queue[msg.guild.id].playing = false, queue[msg.guild.id].songs = [];
+      await queue[msg.guild.id].songs.push({url: url, title: info.title, requester: msg.author.username});
+      await link.set(`${url}`);
+			await msg.channel.sendMessage(`added **${info.title}** to the queue`);
+		});
+	},
+	'queue': async(msg) => {
+		if (queue[msg.guild.id] === undefined) return await msg.channel.sendMessage(`Add some songs to the queue first with ${config.prefix}add`);
+		let tosend = [];
+		await queue[msg.guild.id].songs.forEach(async(song, i) => {await tosend.push(`${i+1}. ${song.title} - Requested by: ${song.requester}`);});
+    await msg.channel.sendMessage(`__**${msg.guild.name}'s Music Queue:**__ Currently **${tosend.length}** songs queued ${(tosend.length > 15 ? '*[Only next 15 shown]*' : '')}\n\`\`\`${tosend.slice(0,15).join('\n')}\`\`\``);
+    
+    let e = link.entries().next().value;
+    let sl = e.slice(0, -1);
+    await msg.channel.send(`link entries (ignore if blank): ${sl}`);
+	},
+  'MusicCommands': async(msg) => {
+		let tosend = await ['```xl', config.prefix + 'join : "Join Voice channel of msg sender"',	config.prefix + 'add : "Add a valid youtube link to the queue"', config.prefix + 'queue : "Shows the current queue, up to 15 songs shown."', config.prefix + 'play : "Play the music queue if already joined to a voice channel"', '', 'the following commands only function while the play command is running:'.toUpperCase(), config.prefix + 'pause : "pauses the music"',	config.prefix + 'resume : "resumes the music"',config.prefix + 'skip : "skips the playing song"', config.prefix + 'time : "Shows the playtime of the song."',	'volume+(+++) : "increases volume by 2%/+"',	'volume-(---) : "decreases volume by 2%/-"',	'```'];
+		await msg.channel.sendMessage(tosend.join('\n'));
+	},
+	'reboot': async(msg) => {
+		if (msg.author.id == `${config.owner}`) {return await process.exit(1); } //Requires a node module like Forever to work.
+  },
+  'leave': async(msg) => {
+    try{
+    await msg.channel.send("leaving vc...");
+    await link.clear();
+    const voiceChannel = await msg.member.voiceChannel;
+    return await voiceChannel.leave();
+    }
+    catch(e) {
+      return await msg.channel.send(`sorry, i couldn't leave because: ${e}`);
+    }
+  }
+};
+
+client.on('message', async(msg) => {
+  if (!msg.content.startsWith(config.prefix)) { return; }
+if (commands.hasOwnProperty(msg.content.toLowerCase().slice(config.prefix.length).split(' ')[0])) commands[msg.content.toLowerCase().slice(config.prefix.length).split(' ')[0]](msg);
+});
+}
 
 
 //client.on("message", async message => {
@@ -492,6 +610,10 @@ return;
 console.log(`${member}`);
 console.log(`${reason}`);
 
+if (`${member}` === `<@${config.ownerID}>`) {
+  return await message.channel.send(`<@${message.author.id}>, you can't warn the bot owner`);
+}
+
 if (message.author.id !== config.ownerID) {
 if(member.hasPermission("ADMINISTRATOR")) {
   return await message.channel.send(`<@${member.id}> has admin, you can't warn an admin`);
@@ -499,8 +621,8 @@ if(member.hasPermission("ADMINISTRATOR")) {
 }
 
 try {
-await member.send(`${member}, you have been warned in ${server} because ${reason}`);
-return await message.channel.send(`successfully warned <@${member.id}> for ${reason}`);
+await member.send(`${member}, you have been warned in ${server} because/for ${reason}`);
+return await message.channel.send(`successfully warned <@${member.id}> because/for ${reason}`);
 } catch (e) {
 await message.channel.send(`couldn't warn user because of ${e}`);
 return await console.log(`${e}`);
@@ -776,7 +898,6 @@ return await message.channel.send(`${member} is **0%** gay`);
 return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`)
 
 }
-
 
 if(command === "furry") {
         if (config.selfbot === "true") {
