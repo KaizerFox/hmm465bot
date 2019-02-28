@@ -6,5 +6,5 @@
 "owner":"[your user id]",
 "ownerID":"[same as owner]",
 "roleToDisco": "[role name]",
-"GoogleApi": "[api token]"
+"MusicCommands": "false"
 }
