@@ -1,4 +1,4 @@
-//VERSION = 10.3
+//VERSION = 10.4
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -23,8 +23,6 @@ io.init({
 
 var http = require('https');
 var fs = require('fs');
-
-var RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
 
 
 function UpdateFile(FileName,Link) {
@@ -374,6 +372,7 @@ if (message.author.id == blacklist) {
 return;
 }
 try {
+var RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
 embed = new Discord.RichEmbed()
           .setColor(RandomNoHash)
           .addField("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt"),
@@ -521,6 +520,7 @@ if(command === "embed") {
         await message.delete().catch(async(O_o)=>{});
 
         if(strx == "random " + `${msgx}`) {
+	  var RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
           console.log("randomized color was chosen");
           let embed = new Discord.RichEmbed()
           .setColor(RandomNoHash)
@@ -545,6 +545,7 @@ if(command === "embed") {
         }
         if (message.author.id !== config.ownerID) {
         if(!message.member.hasPermission("BAN_MEMBERS")) {
+	  var RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
           error = new Discord.RichEmbed()
           .setColor(RandomNoHash)
           .addField("Error", "Sorry, you don't have permissions to use this!"),
@@ -568,6 +569,7 @@ if(command === "embed") {
 
 
         if(!member.bannable) {
+	  var RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
           error = new Discord.RichEmbed()
           .setColor(RandomNoHash)
           .addField("Error", "I can't do this"),
@@ -580,6 +582,7 @@ if(command === "embed") {
         
         await member.ban(reason)
           .catch(async(error) => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+	var RandomNoHash = (Math.random()*0xFFFFFF<<0).toString(16);
         let embed = new Discord.RichEmbed()
         .setColor(RandomNoHash)
         .setDescription(`${member} has been banned by ${message} because: ${reason}`)
