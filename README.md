@@ -1,7 +1,7 @@
 # = INFO: =
 
 ```asciidoc
-= [readme version: 3.7] =
+= [readme version: 3.8] =
 
 = hmm465bot a project by Hmm465. =
 
@@ -14,11 +14,11 @@
 
 # = LINKS: =
 
-## [website](https://hmm465.github.io/hmm465bot/)
+## [website](http://hmm465.is-great.net)
 
 ## [github](https://github.com/Hmm465/hmm465bot)
 
-## [discord](https://hmm465.weebly.com/discord.html)
+## [discord](http://hmm465.is-great.net/discord.php)
 
 ## [command list](https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt)
 
