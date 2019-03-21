@@ -1,4 +1,4 @@
-[COMMAND LIST VERSION: 3.4]
+[COMMAND LIST VERSION: 3.5]
 
 =USABLE BY ANYONE:=
 
@@ -34,6 +34,10 @@
 !ban [@user]
 
 !unban [@user]
+
+!warn [@user] [reason]
+
+!dm [@user] [reason]
 
 =BOT's OWNER ONLY:=
 !say [message]
