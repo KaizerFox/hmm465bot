@@ -1,4 +1,4 @@
-[COMMAND LIST VERSION: 3.3]
+[COMMAND LIST VERSION: 3.4]
 
 =USABLE BY ANYONE:=
 
@@ -36,6 +36,8 @@
 !unban [@user]
 
 =BOT's OWNER ONLY:=
+!say [message]
+
 !dmall [message]
 
 !setstatus [game]
