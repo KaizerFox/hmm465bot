@@ -1,4 +1,4 @@
-//VERSION = 10.4
+//VERSION = 10.5
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -628,6 +628,42 @@ await member.send(`${member}, you have been warned in ${server} because/for ${re
 return await message.channel.send(`successfully warned <@${member.id}> because/for ${reason}`);
 } catch (e) {
 await message.channel.send(`couldn't warn user because of ${e}`);
+return await console.log(`${e}`);
+}
+}
+
+if(command === "dm") {
+      if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+}
+      }
+
+if (message.author.id !== config.ownerID) {
+if(!message.member.hasPermission("ADMINISTRATOR")) {
+ return await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
+}
+}
+
+let member = message.mentions.members.first();
+let server = message.guild.name
+let mess = args.slice(1).join(' ');
+if(!mess) { 
+await message.channel.send("usage: !dm [user] [message]");
+return;
+}
+console.log(`${member}`);
+console.log(`${mess}`);
+
+if (`${member}` === `<@${config.ownerID}>`) {
+  return await message.channel.send(`<@${message.author.id}>, you can't dm the bot owner`);
+}
+
+try {
+await member.send(`${mess}`);
+return await message.channel.send(`dmed <@${member.id}> for ${mess}`);
+} catch (e) {
+await message.channel.send(`couldn't dm user because of ${e}`);
 return await console.log(`${e}`);
 }
 }
