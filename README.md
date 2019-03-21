@@ -1,13 +1,13 @@
 # = INFO: =
 
 ```asciidoc
-= [readme version: 3.6] =
+= [readme version: 3.7] =
 
 = hmm465bot a project by Hmm465. =
 
 = open run.bat and then do node bot in console (make sure node.js and discord.js is installed) = 
 
-= if you need more help dm Hmm465#6560 on discord. =
+= if you need more help dm me on discord, my user name is on my github profile description (link below) =
 
 = the description of the updater (in links) explains how to use the updater. =
 ```
@@ -23,4 +23,6 @@
 ## [command list](https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt)
 
 ## [updater](https://github.com/Hmm465/hmm465bot/releases)
+
+## [git hub profile](https://github.com/Hmm465)
 
