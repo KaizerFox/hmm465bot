@@ -1,4 +1,4 @@
-//VERSION = 10.5
+//VERSION = 10.6
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -341,7 +341,27 @@ let ownerID = `${config.owner}`
         await m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       }
 	
-	  
+    
+      if(command === "cuddle") {
+        if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+        }
+        }
+      let user = message.mentions.members.first();
+
+      var cudd = [
+        `cuddled <@${user}>`,
+        `<@${user}> ran away`,
+        `<@${user}> cuddled you back`
+      ]
+
+     if(!user) {
+      return await message.channel.send("usage: !infect [@user]");
+    }
+
+    return await message.channel.send(cudd[Math.floor(Math.random() * cudd.length)]);
+          }
 	
 
 
@@ -483,7 +503,10 @@ if(command === "kick") {
       }
 
         let member = message.mentions.members.first();
-      
+       
+        if (`${message.author.id}` === `${member.id}`) {
+          return await message.channel.send("i'm not sure why you would kick yourself");
+        }
 
         if(!member) {
           return await message.channel.send("Please mention a valid member of this server");
@@ -554,6 +577,8 @@ if(command === "embed") {
         }
       }
 
+
+
         let member = message.mentions.members.first();
         if(!member)  { 
           error = new Discord.RichEmbed()
@@ -561,6 +586,10 @@ if(command === "embed") {
           .addField("Error", "Please mention a valid member of this server"),
           await message.channel.sendEmbed(error)
           return;
+        }
+
+        if (`${message.author.id}` === `${member.id}`) {
+          return await message.channel.send("i'm not sure why you would ban yourself");
         }
 
         if(`${member.id}` === `${config.owner}`)   {
@@ -931,7 +960,17 @@ return;
   
 
 if(`${member}` === `<@${config.owner}>`) {
-return await message.channel.send(`${member} is **0%** gay`);
+return await message.channel.send(`${member} is **109%** gay`);
+}
+ 
+
+if(`${member}` === `<@154498485108998145>`) {
+return await message.channel.send(`${member} is **100%** gay`);
+}
+  
+ 
+if(`${member}` === `<@239839016579629056>`) {
+return await message.channel.send(`${member} is **100%** gay`);
 }
 
 return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`)
@@ -950,7 +989,7 @@ if(command === "furry") {
     }
   
 if(`${member}` === `<@${config.owner}>`) {
-return await message.channel.send(`${member} is **100%** of a furry`);
+return await message.channel.send(`${member} is **109%** of a furry`);
 }
 
 return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** of a furry`);
