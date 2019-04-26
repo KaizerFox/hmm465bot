@@ -1,4 +1,4 @@
-//VERSION = 10.6
+//VERSION = 10.7
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -348,16 +348,25 @@ let ownerID = `${config.owner}`
                   return;
         }
         }
+
       let user = message.mentions.members.first();
 
       var cudd = [
-        `cuddled <@${user}>`,
-        `<@${user}> ran away`,
-        `<@${user}> cuddled you back`
+        `${message.author} cuddled ${user}`,
+        `${user} ran away ${message.author}`,
+        `${user} cuddled you back`
       ]
 
+if(`${user}` === `<@297803507468206080>`) {
+  if(`${message.author}` ===  `<@${config.ownerID}>`) {
+return await message.channel.send(`${message.author} gave the biggest cuddle to ${user}`);
+  } else {
+return await message.channel.send("no >:(");
+  }
+}
+
      if(!user) {
-      return await message.channel.send("usage: !infect [@user]");
+      return await message.channel.send("usage: !cuddle [@user]");
     }
 
     return await message.channel.send(cudd[Math.floor(Math.random() * cudd.length)]);
