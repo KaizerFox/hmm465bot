@@ -1,4 +1,4 @@
-[COMMAND LIST VERSION: 3.5]
+[COMMAND LIST VERSION: 3.6]
 
 =USABLE BY ANYONE:=
 
@@ -27,6 +27,8 @@
 !infect [@user]
 
 !furry [@user]
+
+!cuddle [@user]
 
 =USABLE BY ANYONE WITH ADMIN PERM:=
 !kick [@user]
