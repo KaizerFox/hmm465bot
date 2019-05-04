@@ -1,4 +1,4 @@
-//VERSION = 10.7
+//VERSION = 10.8
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -57,10 +57,8 @@ console.log(`${a}`);
 
 
 client.on("ready", () => {
-    console.log(`Bot has started`.green); 
-client.user.setPresence({game:{name: "your cries of help",type:2}});
+client.user.setPresence({ game: { name: 'my death', type: "streaming", url: "https://www.twitch.tv/dontstalkmebro69"}});
 console.log("loaded".green)
-
 });
 
            function sleep(delay) {
@@ -353,14 +351,17 @@ let ownerID = `${config.owner}`
 
       var cudd = [
         `${message.author} cuddled ${user}`,
-        `${user} ran away ${message.author}`,
+        `${user} ran away from ${message.author}`,
         `${user} cuddled you back`
       ]
 
 if(`${user}` === `<@297803507468206080>`) {
+  console.log("user is nicole");
   if(`${message.author}` ===  `<@${config.ownerID}>`) {
+    console.log("its only me trying to cuddle him");
 return await message.channel.send(`${message.author} gave the biggest cuddle to ${user}`);
   } else {
+    console.log("its someone else trying to cuddle him");
 return await message.channel.send("no >:(");
   }
 }
