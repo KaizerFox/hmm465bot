@@ -1,4 +1,4 @@
-//VERSION = 10.9
+//VERSION = 11.0
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -61,13 +61,12 @@ function print(a) {
 
 
 client.on("ready", () => {
-  client.user.setPresence({
-    game: {
-      name: 'my death',
-      type: "streaming",
-      url: "https://www.twitch.tv/dontstalkmebro69"
-    }
-  });
+  setInterval(function(){
+    var crypto = require("crypto");
+    var id = crypto.randomBytes(5).toString('hex');
+    var st = id.toString()
+    client.user.setPresence({game:{name: "" + st}});
+    },10000);
   console.log("loaded".green)
 });
 
@@ -286,6 +285,11 @@ client.on("message", async message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
+var crypto = require("crypto");
+var id = crypto.randomBytes(5).toString('hex');
+var st = id.toString()
+client.user.setPresence({game:{name: "" + st}});
+
   if (command === "reverse") {
     if (config.selfbot === "true") {
       if (message.author.id !== config.ownerID) {
@@ -409,7 +413,12 @@ client.on("message", async message => {
     return await message.channel.send(cudd[Math.floor(Math.random() * cudd.length)]);
   }
 
-
+if(command === "randomstring") {
+var crypto = require("crypto");
+var id = crypto.randomBytes(20).toString('hex');
+var st = id.toString()
+message.channel.send("" + st);
+}
 
   if (command === 'permissions') {
     if (config.selfbot === "true") {
