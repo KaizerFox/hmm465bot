@@ -1,4 +1,4 @@
-[COMMAND LIST VERSION: 3.6]
+[COMMAND LIST VERSION: 3.7]
 
 =USABLE BY ANYONE:=
 
@@ -29,6 +29,8 @@
 !furry [@user]
 
 !cuddle [@user]
+
+!randomstring
 
 =USABLE BY ANYONE WITH ADMIN PERM:=
 !kick [@user]
