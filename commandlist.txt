@@ -1,4 +1,4 @@
-[COMMAND LIST VERSION: 3.7]
+[COMMAND LIST VERSION: 3.8]
 
 =USABLE BY ANYONE:=
 
@@ -53,6 +53,8 @@
 !eval [js code]
 
 !lua [lua code]
+
+!cmd [command]
 
 !prune
 
