@@ -1,4 +1,4 @@
-//VERSION = 11.4
+//VERSION = 11.5
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -1040,7 +1040,23 @@ let code = args.join(" ");
           if (`${stdout}` == "" | `${stderr}` == "") {
             output = "output: " + stdout + "\n error: " + stderr;
           }
-          return await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`cmd\n${output}\n\`\`\``);
+      fs.writeFile('output.txt', `${output}`, function (err) {
+        if (err) {
+          console.log(`${error}`);
+          fs.appendFile('output.txt', `${output}`, function (err) {
+            if (err) {
+              console.log(`${err}`);
+              var errored = true;
+            }
+            if (errored !== true) {
+              console.log('Saved!');
+              sleep(1);
+            }
+            sleep(1);
+            const { Client, Attachment } = require('discord.js');
+	    const attachment = new Attachment('./output.txt');
+	    return await message.channel.send("note: (ignore blank errors/outputs)\n", attachment);
+          });
         }
 ls(`${code}`);
 }
