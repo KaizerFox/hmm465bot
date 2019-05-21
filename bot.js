@@ -1,4 +1,4 @@
-//VERSION = 11.5
+//VERSION = 11.9
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -23,6 +23,18 @@ io.init({
 
 var http = require('https');
 var fs = require('fs');
+
+async function type(channel,bool,number) {	
+if(`${bool}` === `true`) {
+return await channel.startTyping(`${number}`); 
+}
+if(`${bool}` === `false`) { 
+return await channel.stopTyping(true);	
+}	
+}
+
+//to type do function: type(message.channel,true,3)
+//stop typing is: type(message.channel,false,0)
 
 
 function UpdateFile(FileName, Link) {
@@ -123,144 +135,6 @@ client.on('message', async (msg) => {
 
 });
 
-if (`${config.MusicCommands}` === "true") {
-  const tokens = config;
-  let queue = {};
-  let link = new Map();
-
-  const commands = {
-    'play': async (msg) => {
-      if (queue[msg.guild.id] === undefined) return await msg.channel.sendMessage(`Add some songs to the queue first with ${config.prefix}add`);
-      if (!msg.guild.voiceConnection) return await commands.join(msg).then(async () => await commands.play(msg));
-      if (queue[msg.guild.id].playing) return await msg.channel.sendMessage('Already Playing');
-      let dispatcher;
-      queue[msg.guild.id].playing = true;
-
-      console.log(queue && link.entries().next().value);
-      (async function play(song) {
-        console.log(song);
-        if (song === undefined && link.entries().next().value === '' || undefined) return await msg.channel.sendMessage('Queue is empty').then(async () => {
-          queue[msg.guild.id].playing = false;
-          await msg.member.voiceChannel.leave();
-        });
-
-        console.log(`${song}`);
-
-        let e = link.entries().next().value;
-        let sl = e.slice(0, -1);
-        console.log(`${sl}`);
-        let ent_st = `${sl}`;
-
-        dispatcher = await msg.guild.voiceConnection.playStream(yt(ent_st, {
-          audioonly: true
-        }), {
-          passes: 1
-        });
-        let collector = await msg.channel.createCollector(async (m) => await m);
-        collector.on('message', async (m) => {
-          if (m.content.startsWith(tokens.prefix + 'pause')) {
-            await msg.channel.sendMessage('paused').then(async () => {
-              await dispatcher.pause();
-            });
-          } else if (m.content.startsWith(tokens.prefix + 'resume')) {
-            await msg.channel.sendMessage('resumed').then(async () => {
-              await dispatcher.resume();
-            });
-          } else if (m.content.startsWith(tokens.prefix + 'skip')) {
-            await msg.channel.sendMessage('skipped').then(async () => {
-              await dispatcher.end();
-            });
-          } else if (m.content.startsWith('volume+')) {
-            if (Math.round(dispatcher.volume * 50) >= 100) return await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
-            await dispatcher.setVolume(Math.min((dispatcher.volume * 50 + (2 * (m.content.split('+').length - 1))) / 50, 2));
-            await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
-          } else if (m.content.startsWith('volume-')) {
-            if (Math.round(dispatcher.volume * 50) <= 0) return await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
-            await dispatcher.setVolume(Math.max((dispatcher.volume * 50 - (2 * (m.content.split('-').length - 1))) / 50, 0));
-            await msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
-          } else if (m.content.startsWith(tokens.prefix + 'time')) {
-            await msg.channel.sendMessage(`time: ${Math.floor(dispatcher.time / 60000)}:${Math.floor((dispatcher.time % 60000)/1000) <10 ? '0'+Math.floor((dispatcher.time % 60000)/1000) : Math.floor((dispatcher.time % 60000)/1000)}`);
-          }
-        });
-        dispatcher.on('end', async () => {
-          await collector.stop();
-          await link.clear();
-          await play(queue[msg.guild.id].songs.shift());
-        });
-        dispatcher.on('error', async (err) => {
-          return await msg.channel.sendMessage('error: ' + err).then(async () => {
-            await collector.stop();
-            await link.clear();
-            await play(queue[msg.guild.id].songs.shift());
-          });
-        });
-      })(queue[msg.guild.id].songs.shift());
-    },
-    'join': async (msg) => {
-      return await new Promise(async (resolve, reject) => {
-        const voiceChannel = await msg.member.voiceChannel;
-        if (!voiceChannel || voiceChannel.type !== 'voice') return msg.reply('I couldn\'t connect to your voice channel...');
-        await voiceChannel.join().then(async (connection) => await resolve(connection)).catch(async (err) => await reject(err));
-      });
-    },
-    'add': async (msg) => {
-      let url = await msg.content.split(' ')[1];
-      if (url == '' || url === undefined) return await msg.channel.sendMessage(`You must add a YouTube video url, or id after ${tokens.prefix}add`);
-      await yt.getInfo(url, async (err, info) => {
-        if (err) {
-          return await msg.channel.sendMessage('Invalid YouTube Link: ' + err);
-        }
-        if (!queue.hasOwnProperty(msg.guild.id)) queue[msg.guild.id] = {}, queue[msg.guild.id].playing = false, queue[msg.guild.id].songs = [];
-        await queue[msg.guild.id].songs.push({
-          url: url,
-          title: info.title,
-          requester: msg.author.username
-        });
-        await link.set(`${url}`);
-        await msg.channel.sendMessage(`added **${info.title}** to the queue`);
-      });
-    },
-    'queue': async (msg) => {
-      if (queue[msg.guild.id] === undefined) return await msg.channel.sendMessage(`Add some songs to the queue first with ${config.prefix}add`);
-      let tosend = [];
-      await queue[msg.guild.id].songs.forEach(async (song, i) => {
-        await tosend.push(`${i+1}. ${song.title} - Requested by: ${song.requester}`);
-      });
-      await msg.channel.sendMessage(`__**${msg.guild.name}'s Music Queue:**__ Currently **${tosend.length}** songs queued ${(tosend.length > 15 ? '*[Only next 15 shown]*' : '')}\n\`\`\`${tosend.slice(0,15).join('\n')}\`\`\``);
-
-      let e = link.entries().next().value;
-      let sl = e.slice(0, -1);
-      await msg.channel.send(`link entries (ignore if blank): ${sl}`);
-    },
-    'MusicCommands': async (msg) => {
-      let tosend = await ['```xl', config.prefix + 'join : "Join Voice channel of msg sender"', config.prefix + 'add : "Add a valid youtube link to the queue"', config.prefix + 'queue : "Shows the current queue, up to 15 songs shown."', config.prefix + 'play : "Play the music queue if already joined to a voice channel"', '', 'the following commands only function while the play command is running:'.toUpperCase(), config.prefix + 'pause : "pauses the music"', config.prefix + 'resume : "resumes the music"', config.prefix + 'skip : "skips the playing song"', config.prefix + 'time : "Shows the playtime of the song."', 'volume+(+++) : "increases volume by 2%/+"', 'volume-(---) : "decreases volume by 2%/-"', '```'];
-      await msg.channel.sendMessage(tosend.join('\n'));
-    },
-    'reboot': async (msg) => {
-      if (msg.author.id == `${config.owner}`) {
-        return await process.exit(1);
-      } //Requires a node module like Forever to work.
-    },
-    'leave': async (msg) => {
-      try {
-        await msg.channel.send("leaving vc...");
-        await link.clear();
-        const voiceChannel = await msg.member.voiceChannel;
-        return await voiceChannel.leave();
-      } catch (e) {
-        return await msg.channel.send(`sorry, i couldn't leave because: ${e}`);
-      }
-    }
-  };
-
-  client.on('message', async (msg) => {
-    if (!msg.content.startsWith(config.prefix)) {
-      return;
-    }
-    if (commands.hasOwnProperty(msg.content.toLowerCase().slice(config.prefix.length).split(' ')[0])) commands[msg.content.toLowerCase().slice(config.prefix.length).split(' ')[0]](msg);
-  });
-}
-
 
 //client.on("message", async message => {
 //let ownerID = `${config.owner}`
@@ -288,7 +162,7 @@ client.on("message", async message => {
 var crypto = require("crypto");
 var id = crypto.randomBytes(5).toString('hex');
 var st = id.toString()
-client.user.setPresence({game:{name: "" + st}});
+await client.user.setPresence({game:{name: "" + st}});
 
   if (command === "reverse") {
     if (config.selfbot === "true") {
@@ -317,7 +191,9 @@ client.user.setPresence({game:{name: "" + st}});
     //example: "olleh"
 
     try {
-      return await message.channel.send(`${joinArray}`);
+      await type(message.channel,true,3)
+      await message.channel.send(`${joinArray}`);
+      return await type(message.channel,false,0)
     } catch (e) {
       return await console.log(`couldnt reverse because ${e.message}`);
     }
@@ -332,7 +208,9 @@ client.user.setPresence({game:{name: "" + st}});
         await theRole.edit({
           color: random
         }).catch(async () => {
-          return await message.channel.send(`couldn't find ${a}, role names are case sensitive.`)
+	  await type(message.channel,true,3);
+          await message.channel.send(`couldn't find ${a}, role names are case sensitive.`);
+	  return await type(message.channel,false,0);
         });
       }
     });
@@ -375,8 +253,10 @@ client.user.setPresence({game:{name: "" + st}});
         return;
       }
     }
+    await type(message.channel,true,3);
     const m = await message.channel.send("pinging...");
     await m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
+    return await type(message.channel,false,0);
   }
 
 
@@ -399,25 +279,33 @@ client.user.setPresence({game:{name: "" + st}});
       console.log("user is nicole");
       if (`${message.author}` === `<@${config.ownerID}>`) {
         console.log("its only me trying to cuddle him");
-        return await message.channel.send(`${message.author} gave the biggest cuddle to ${user}`);
+	await type(message.channel,true,3);
+        await message.channel.send(`${message.author} gave the biggest cuddle to ${user}`);
+	return await type(message.channel,false,0);
       } else {
         console.log("its someone else trying to cuddle him");
-        return await message.channel.send("no >:(");
+	await type(message.channel,true,3);
+        await message.channel.send("no >:(");
+	return await type(message.channel,false,0);
       }
     }
-
     if (!user) {
-      return await message.channel.send("usage: !cuddle [@user]");
+      await type(message.channel,true,3);
+      await message.channel.send("usage: !cuddle [@user]");
+      return await type(message.channel,false,0);
     }
-
-    return await message.channel.send(cudd[Math.floor(Math.random() * cudd.length)]);
+          await type(message.channel,true,3);
+          await message.channel.send(cudd[Math.floor(Math.random() * cudd.length)]);
+	  return await type(message.channel,false,0);
   }
 
 if(command === "randomstring") {
 var crypto = require("crypto");
 var id = crypto.randomBytes(20).toString('hex');
 var st = id.toString()
-message.channel.send("" + st);
+await type(message.channel,true,3);
+await message.channel.send("" + st);
+return await type(message.channel,false,0);
 }
 
   if (command === 'permissions') {
@@ -427,8 +315,10 @@ message.channel.send("" + st);
       }
     }
     try {
+      await type(message.channel,true,3);
       await message.author.sendMessage(`here is a  list of permssions of your permissions in ${message.guild.name}`);
-      return await message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```');
+      await message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```');
+      return await type(message.channel,false,0);
     } catch (e) {
       return;
     }
@@ -447,11 +337,13 @@ message.channel.send("" + st);
       return;
     }
     try {
+      await type(message.channel,true,3);
       var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
       embed = new Discord.RichEmbed()
         .setColor(RandomNoHash)
         .addField("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt"),
-        await message.channel.sendEmbed(embed);
+        await message.channel.sendEmbed(embed)
+	await type(message.channel,false,0)
       return;
     } catch (e) {
       return;
@@ -469,7 +361,9 @@ message.channel.send("" + st);
       return;
     }
     try {
-      return await message.channel.send("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js");
+      await type(message.channel,true,3);
+      await message.channel.send("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js");
+      return await type(message.channel,false,0);
     } catch (e) {
       return;
     }
@@ -487,7 +381,9 @@ message.channel.send("" + st);
       return;
     }
     try {
-      return await message.channel.send("https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847");
+      await type(message.channel,true,3);
+      await message.channel.send("https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847");
+      return await type(message.channel,false,0);
     } catch (e) {
       return;
     }
@@ -509,7 +405,7 @@ message.channel.send("" + st);
 
     await message.channel.startTyping(3);
     await message.channel.send(`${strx}`);
-    await message.channel.stopTyping(true);
+    return await message.channel.stopTyping(true);
   }
 
   if (command === "spam") {
@@ -526,8 +422,7 @@ message.channel.send("" + st);
     console.log("starting to spam...");
     const strx = args.join(" ");
     if (!strx) return;
-
-
+	  
     setInterval(async () => {
       await message.channel.startTyping(3);
       await console.log("typing...");
@@ -547,29 +442,40 @@ message.channel.send("" + st);
         return;
       }
     }
-
+	 
+	  
     if (message.author.id !== config.ownerID) {
       if (!message.member.hasPermission("KICK_MEMBERS")) {
-        return await message.channel.send("Sorry, you don't have permissions to use this!");
+	await type(message.channel,true,3);
+        await message.channel.send("Sorry, you don't have permissions to use this!");
+	return await type(message.channel,false,0);
       }
     }
 
     let member = message.mentions.members.first();
 
     if (`${message.author.id}` === `${member.id}`) {
-      return await message.channel.send("i'm not sure why you would kick yourself");
+      await type(message.channel,true,3);
+      await message.channel.send("i'm not sure why you would kick yourself");
+      return await type(message.channel,false,0);
     }
 
     if (!member) {
-      return await message.channel.send("Please mention a valid member of this server");
+      await type(message.channel,true,3);
+      await message.channel.send("Please mention a valid member of this server");
+      return await type(message.channel,false,0);
     }
 
     if (`${member.id}` === `${config.owner}`) {
-      return await message.channel.send("you can't kick the bot owner.");
+      await type(message.channel,true,3);
+      await message.channel.send("you can't kick the bot owner.");
+      return await type(message.channel,false,0);
     }
 
     if (!member.kickable) {
-      return await message.channel.send("member is not kickable");
+      await type(message.channel,true,3);
+      await message.channel.send("member is not kickable");
+      return await type(message.channel,false,0);
     }
 
     let reason = args.slice(1).join(' ');
@@ -577,10 +483,11 @@ message.channel.send("" + st);
       reason = "No reason provided";
     }
 
-
+    await type(message.channel,true,3);
     await member.kick(reason)
       .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`))
     await message.channel.send(`${member} has been kicked by ${message} because: ${reason}`)
+    await type(message.channel,false,0)
     return;
   }
 
@@ -599,17 +506,21 @@ message.channel.send("" + st);
     if (strx == "random " + `${msgx}`) {
       var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
       console.log("randomized color was chosen");
+      await type(message.channel,true,3);
       let embed = new Discord.RichEmbed()
         .setColor(RandomNoHash)
         .setDescription(msgx)
       await message.channel.sendEmbed(embed)
+      await type(message.channel,false,0)
       return;
     } else {
       console.log("custom color was chosen");
+      await type(message.channel,true,3);
       let embed = new Discord.RichEmbed()
         .setColor(strx)
         .setDescription(msgx)
       await message.channel.sendEmbed(embed)
+      await type(message.channel,false,0)
       return;
     }
   }
@@ -622,11 +533,13 @@ message.channel.send("" + st);
     }
     if (message.author.id !== config.ownerID) {
       if (!message.member.hasPermission("BAN_MEMBERS")) {
+	await type(message.channel,true,3);
         var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
         error = new Discord.RichEmbed()
           .setColor(RandomNoHash)
           .addField("Error", "Sorry, you don't have permissions to use this!"),
           await message.channel.sendEmbed(error)
+	  await type(message.channel,false,0)
         return;
       }
     }
@@ -635,28 +548,36 @@ message.channel.send("" + st);
 
     let member = message.mentions.members.first();
     if (!member) {
+      await type(message.channel,true,3);
       error = new Discord.RichEmbed()
         .setColor("#a00ff5")
         .addField("Error", "Please mention a valid member of this server"),
         await message.channel.sendEmbed(error)
+	await type(message.channel,false,0)
       return;
     }
 
     if (`${message.author.id}` === `${member.id}`) {
-      return await message.channel.send("i'm not sure why you would ban yourself");
+      await type(message.channel,true,3);
+      await message.channel.send("i'm not sure why you would ban yourself");
+      return await type(message.channel,false,0);
     }
 
     if (`${member.id}` === `${config.owner}`) {
-      return await message.channel.send("you can't ban the bot owner.");
+      await type(message.channel,true,3);
+      await message.channel.send("you can't ban the bot owner.");
+      return await type(message.channel,false,0);
     }
 
 
     if (!member.bannable) {
+      await type(message.channel,true,3);
       var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
       error = new Discord.RichEmbed()
         .setColor(RandomNoHash)
         .addField("Error", "I can't do this"),
         await message.channel.sendEmbed(error)
+	await type(message.channel,false,0);
       return;
     }
 
@@ -664,14 +585,19 @@ message.channel.send("" + st);
     if (!reason) {
       reason = "No reason provided";
     }
-
+    
     await member.ban(reason)
-      .catch(async (error) => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+      .catch(async (error) => { await type(message.channel,true,3);
+	    message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`) 
+            await type(message.channel,false,0); });
+    
+    await type(message.channel,true,3);
     var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
     let embed = new Discord.RichEmbed()
       .setColor(RandomNoHash)
       .setDescription(`${member} has been banned by ${message} because: ${reason}`)
     await message.channel.sendEmbed(embed)
+    await type(message.channel,false,0)
     return;
   }
 
@@ -692,27 +618,37 @@ message.channel.send("" + st);
     let server = message.guild.name
     let reason = args.slice(1).join(' ');
     if (!reason) {
+      await type(message.channel,true,3);
       await message.channel.send("usage: !warn [user] [reason]");
+      await type(message.channel,false,0);
       return;
     }
     console.log(`${member}`);
     console.log(`${reason}`);
 
     if (`${member}` === `<@${config.ownerID}>`) {
-      return await message.channel.send(`<@${message.author.id}>, you can't warn the bot owner`);
+      await type(message.channel,true,3);
+      await message.channel.send(`<@${message.author.id}>, you can't warn the bot owner`);
+      return await type(message.channel,false,0);
     }
 
     if (message.author.id !== config.ownerID) {
       if (member.hasPermission("ADMINISTRATOR")) {
-        return await message.channel.send(`<@${member.id}> has admin, you can't warn an admin`);
+	await type(message.channel,true,3);
+        await message.channel.send(`<@${member.id}> has admin, you can't warn an admin`);
+	return await type(message.channel,false,0);
       }
     }
 
     try {
+      await type(message.channel,true,3);
       await member.send(`${member}, you have been warned in ${server} because/for ${reason}`);
-      return await message.channel.send(`successfully warned <@${member.id}> because/for ${reason}`);
+      await message.channel.send(`successfully warned <@${member.id}> because/for ${reason}`);
+      return await type(message.channel,false,0);
     } catch (e) {
+      await type(message.channel,true,3);
       await message.channel.send(`couldn't warn user because of ${e}`);
+      await type(message.channel,false,0);
       return await console.log(`${e}`);
     }
   }
@@ -726,7 +662,9 @@ message.channel.send("" + st);
 
     if (message.author.id !== config.ownerID) {
       if (!message.member.hasPermission("ADMINISTRATOR")) {
-        return await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
+	await type(message.channel,true,3);
+        await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
+	return await type(message.channel,false,0);
       }
     }
 
@@ -734,21 +672,29 @@ message.channel.send("" + st);
     let server = message.guild.name
     let mess = args.slice(1).join(' ');
     if (!mess) {
+      await type(message.channel,true,3);
       await message.channel.send("usage: !dm [user] [message]");
+      await type(message.channel,false,0);
       return;
     }
     console.log(`${member}`);
     console.log(`${mess}`);
 
     if (`${member}` === `<@${config.ownerID}>`) {
-      return await message.channel.send(`<@${message.author.id}>, you can't dm the bot owner`);
+      await type(message.channel,true,3);
+      await message.channel.send(`<@${message.author.id}>, you can't dm the bot owner`);
+      return await type(message.channel,false,0);
     }
 
     try {
+      await type(message.channel,true,3);
       await member.send(`${mess}`);
-      return await message.channel.send(`dmed <@${member.id}> for ${mess}`);
+      await message.channel.send(`dmed <@${member.id}> for ${mess}`);
+      return await type(message.channel,false,0);
     } catch (e) {
+      await type(message.channel,true,3);
       await message.channel.send(`couldn't dm user because of ${e}`);
+      await type(message.channel,false,0);
       return await console.log(`${e}`);
     }
   }
@@ -763,7 +709,9 @@ message.channel.send("" + st);
     if (!strx) {
       return message.channel.send("usage: !8ball [question]");
     }
-    message.channel.send(fortunes[Math.floor(Math.random() * fortunes.length)]);
+    await type(message.channel,true,3);
+    await message.channel.send(fortunes[Math.floor(Math.random() * fortunes.length)]);
+    return await type(message.channel,false,0);
   }
 
   if (command === "infect") {
@@ -774,14 +722,19 @@ message.channel.send("" + st);
     }
     let member = message.mentions.members.first();
     if (!member) {
-      return await message.channel.send("usage: !infect [@user]");
+      await type(message.channel,true,3);
+      await message.channel.send("usage: !infect [@user]");
+      return await type(message.channel,false,0);
     }
 
     if (`${member}` === `<@494253853915611168>`) {
-      return await message.channel.send(`${member} cannot be infected`);
+      await type(message.channel,true,3);
+      await message.channel.send(`${member} cannot be infected`);
+      return await type(message.channel,false,0);
     }
-
-    return await message.channel.send(`${member} ` + infec[Math.floor(Math.random() * infec.length)]);
+    await type(message.channel,true,3);
+    await message.channel.send(`${member} ` + infec[Math.floor(Math.random() * infec.length)]);
+    return await type(message.channel,false,0);
   }
 
 
@@ -803,19 +756,25 @@ message.channel.send("" + st);
 
     const ied = args.join(" ");
     await message.guild.unban(ied);
-    return await message.channel.send(`<@${ied}> was unbanned`);
+    await type(message.channel,true,3);
+    await message.channel.send(`<@${ied}> was unbanned`);
+    return await type(message.channel,false,0);
   }
   if (command === "userinfo") {
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if (!member) {
-      return await message.reply("usage: !userinfo [@user]");
+      await type(message.channel,true,3);
+      await message.reply("usage: !userinfo [@user]");
+      return await type(message.channel,false,0);
     }
     let User = member
     let ID = member.id
     let HighestRole = member.highestRole.name
     let JoinedAt = member.joinedAt
     let Avatar = member.user.avatarURL
-    return await message.channel.send(`name: ${User}, id: ${ID}, Join Date: ${JoinedAt}, Highest role: ${HighestRole}, Avatar: ${Avatar}`);
+    await type(message.channel,true,3);
+    await message.channel.send(`name: ${User}, id: ${ID}, Join Date: ${JoinedAt}, Highest role: ${HighestRole}, Avatar: ${Avatar}`);
+    return await type(message.channel,false,0);
   }
 
   function clean(text) {
@@ -841,12 +800,16 @@ message.channel.send("" + st);
 
       if (typeof evaled !== "string")
         evaled = require("util").inspect(evaled);
-
-      message.channel.send(clean(evaled), {
+       
+      await type(message.channel,true,3);
+      await message.channel.send(clean(evaled), {
         code: "xl"
       });
+      return await type(message.channel,false,0);
     } catch (err) {
-      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      await type(message.channel,true,3);
+      await message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      return await type(message.channel,false,0);
     }
   }
 
@@ -886,7 +849,9 @@ message.channel.send("" + st);
           if (`${stdout}` == "" | `${stderr}` == "") {
             output = "output: " + stdout + "\n error: " + stderr;
           }
-          return await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
+          await type(message.channel,true,3);
+          await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
+          return await type(message.channel,false,0);
         }
         await sleep(1);
         return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/RandomString.lua`);
@@ -913,7 +878,9 @@ message.channel.send("" + st);
           if (`${stdout}` == "" | `${stderr}` == "") {
             output = "output: " + stdout + "\n error: " + stderr;
           }
-          return await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
+          await type(message.channel,true,3);
+          await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
+          return await type(message.channel,false,0);
         }
         await sleep(1);
         return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/exe.lua`);
@@ -1022,8 +989,10 @@ let code = args.join(" ");
 	
 	const util = require('util');
         const exec = util.promisify(require('child_process').exec);
-
-        async function ls(b) {
+	
+	  var fs = require('fs');
+	
+	 async function ls(b) {
           const {
             stdout,
             stderr
@@ -1040,24 +1009,36 @@ let code = args.join(" ");
           if (`${stdout}` == "" | `${stderr}` == "") {
             output = "output: " + stdout + "\n error: " + stderr;
           }
-      fs.writeFile('output.txt', `${output}`, function (err) {
-        if (err) {
-          console.log(`${error}`);
-          fs.appendFile('output.txt', `${output}`, function (err) {
-            if (err) {
-              console.log(`${err}`);
-              var errored = true;
-            }
-            if (errored !== true) {
-              console.log('Saved!');
-              sleep(1);
-            }
+         
+         fs.writeFile('output.txt', `${output}`, async function (err) {
+          if (err) {
+            await console.log(`${err}`);
+            fs.appendFile('output.txt', `${output}`, async function (err) {
+              if (err) {
+                console.log(`${err}`);
+                var errored = true;
+              }
+              if (errored !== true) {
+                sleep(1);
+              }
             sleep(1);
             const { Client, Attachment } = require('discord.js');
 	    const attachment = new Attachment('./output.txt');
-	    return await message.channel.send("note: (ignore blank errors/outputs)\n", attachment);
-          });
+            await type(message.channel,true,3);
+	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment);
+	    return await type(message.channel,false,0);
+            });
+          }
+	    sleep(1);
+            const { Client, Attachment } = require('discord.js');
+	    const attachment = new Attachment('./output.txt');
+            await type(message.channel,true,3);
+	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment);
+            return await type(message.channel,false,0);
+        });
+    
         }
+            
 ls(`${code}`);
 }
 
@@ -1072,26 +1053,34 @@ ls(`${code}`);
     }
     let member = message.mentions.members.first();
     if (!member) {
-      return await message.reply("Please mention a valid member of this server");
+      await type(message.channel,true,3);
+      await message.reply("Please mention a valid member of this server");
+      return await type(message.channel,false,0);
     }
 
 
     if (`${member}` === `<@${config.owner}>`) {
-      return await message.channel.send(`${member} is **109%** gay`);
+      await type(message.channel,true,3);
+      await message.channel.send(`${member} is **109%** gay`);
+      return await type(message.channel,false,0);
     }
 
 
     if (`${member}` === `<@154498485108998145>`) {
-      return await message.channel.send(`${member} is **100%** gay`);
+      await type(message.channel,true,3);
+      await message.channel.send(`${member} is **100%** gay`);
+      return await type(message.channel,false,0);
     }
 
 
     if (`${member}` === `<@239839016579629056>`) {
-      return await message.channel.send(`${member} is **100%** gay`);
+      await type(message.channel,true,3);
+      await message.channel.send(`${member} is **100%** gay`);
+      return await type(message.channel,false,0);
     }
-
-    return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`)
-
+await type(message.channel,true,3);
+await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** gay`);
+return await type(message.channel,false,0);
   }
 
   if (command === "furry") {
@@ -1102,15 +1091,19 @@ ls(`${code}`);
     }
     let member = message.mentions.members.first();
     if (!member) {
-      return await message.reply("Please mention a valid member of this server");
+	    await type(message.channel,true,3);
+      await message.reply("Please mention a valid member of this server");
+	  return await type(message.channel,false,0);
     }
 
     if (`${member}` === `<@${config.owner}>`) {
-      return await message.channel.send(`${member} is **109%** of a furry`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`${member} is **109%** of a furry`);
+	   return await type(message.channel,false,0);
     }
-
-    return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** of a furry`);
-
+await type(message.channel,true,3);
+     await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** of a furry`);
+return await type(message.channel,false,0);
   }
 
   if (command === "lesbian") {
@@ -1121,14 +1114,19 @@ ls(`${code}`);
     }
     let member = message.mentions.members.first();
     if (!member) {
-      return await message.reply("Please mention a valid member of this server");
+	    await type(message.channel,true,3);
+     await message.reply("Please mention a valid member of this server");
+	    return await type(message.channel,false,0);
     }
 
     if (`${member}` === `<@${config.owner}>`) {
-      return await message.channel.send(`${member} is **0%** lesbian`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`${member} is **0%** lesbian`);
+	    return await type(message.channel,false,0);
     }
-
-    return await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** lesbian`);
+await type(message.channel,true,3);
+     await message.channel.send(`${member} is **${Math.floor(Math.random() * 100) + 1}%** lesbian`);
+	 return await type(message.channel,false,0);
 
   }
 
@@ -1140,92 +1138,39 @@ ls(`${code}`);
     }
     let member = message.mentions.members.first();
     if (!member) {
-      return await message.reply("Please mention a valid member of this server");
+	    await type(message.channel,true,3);
+      await message.reply("Please mention a valid member of this server");
+	    return await type(message.channel,false,0);
     }
 
     if (`${member}` === `<@${config.owner}>`) {
-      return await message.channel.send(`${member} has **200** iq`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`${member} has **200** iq`);
+	    return await type(message.channel,false,0);
     }
 
     if (`${member}` === "<@255142697357017090>") {
-      return await message.channel.send(`i cant calculate ${member}'s iq it's probably too high`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`i cant calculate ${member}'s iq it's probably too high`);
+	  return await type(message.channel,false,0);
     }
 
     if (`${member}` === "<@327517829899223049>") {
-      return await message.channel.send(`${member} has **0** iq`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`${member} has **0** iq`);
+	    return await type(message.channel,false,0);
     }
 
     if (`${member}` === "<@266686545090707456>") {
-      return await message.channel.send(`${member} has **[OVERFLOW ERROR]** iq`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`${member} has **[OVERFLOW ERROR]** iq`);
+	   return await type(message.channel,false,0);
     }
-    return await message.channel.send(`${member} has **${Math.floor(Math.random() * 100) + 1}** iq`);
+	  await type(message.channel,true,3);
+     await message.channel.send(`${member} has **${Math.floor(Math.random() * 100) + 1}** iq`);
+	return await type(message.channel,false,0);
   }
-
-
-  if (command === 'setstatus') {
-    if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
-        return;
-      }
-    }
-    let ownerID = `${config.owner}`
-    if (message.author.id !== ownerID) {
-      return;
-    }
-    const strx = args.join(" ");
-    if (!strx) {
-      return message.channel.send("usage: !setstatus [game]");
-    }
-    let name = args.join(" ");
-
-
-    await client.user.setPresence({
-      game: {
-        name: `${name}`,
-        type: 3
-      }
-    });
-    return await message.channel.send("successfully set status");
-  }
-
-  if (command === "shutdown") {
-    if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
-        return;
-      }
-    }
-    let ownerID = `${config.owner}`
-    if (message.author.id !== ownerID) {
-      return;
-    }
-    await message.channel.send("shutting down...");
-    await sleep(1);
-    await console.log('bot exited via !shutdown command'.red);
-    return await client.destroy();
-  }
-
-  if (command === "dab") {
-    if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
-        return;
-      }
-    }
-    try {
-      await message.delete();
-      let member = message.mentions.members.first();
-      if (!member) {
-        return message.reply("usage: !dab [@user]");
-      }
-
-      return await message.channel.send(`succesfully dabbed on ${member}`);
-    } catch (e) {
-      await message.channel.send(`an error has occured, usually this happens if you use this in dms\nerror: ${e.message}`);
-      await sleep(1);
-      console.log(`Error while deleting: ${e.message}`.red);
-      return;
-    }
-  }
-
+	
   if (command === "dmall") {
     if (config.selfbot === "true") {
       if (message.author.id !== config.ownerID) {
@@ -1234,13 +1179,17 @@ ls(`${code}`);
     }
     let ownerID = `${config.owner}`
     if (message.author.id !== ownerID) {
-      return await message.channel.send(`stop trying as hard as discord <@${message.author.id}>`);
+	    await type(message.channel,true,3);
+      await message.channel.send(`stop trying as hard as discord <@${message.author.id}>`);
+	    return await type(message.channel,false,0);
     }
     message.channel.send("dming all users in guild, this might take awhile..");
     let msg = args.join(' ');
 
     if (!msg || msg.length <= 0) {
-      return await message.channel.send("usage: !dmall [message]");
+	    await type(message.channel,true,3);
+     await message.channel.send("usage: !dmall [message]");
+	    return await type(message.channel,false,0);
     }
 
     message.guild.members.forEach(member => {
