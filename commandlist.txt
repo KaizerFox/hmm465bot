@@ -1,6 +1,7 @@
-[COMMAND LIST VERSION: 3.8]
+[COMMAND LIST VERSION: 3.9]
 
 =USABLE BY ANYONE:=
+!say [message]
 
 !permissions
 
@@ -44,8 +45,6 @@
 !dm [@user] [reason]
 
 =BOT's OWNER ONLY:=
-!say [message]
-
 !dmall [message]
 
 !setstatus [game]
