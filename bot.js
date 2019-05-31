@@ -1,4 +1,4 @@
-//VERSION = 11.9
+//VERSION = 12.0
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -73,12 +73,7 @@ function print(a) {
 
 
 client.on("ready", () => {
-  setInterval(function(){
-    var crypto = require("crypto");
-    var id = crypto.randomBytes(5).toString('hex');
-    var st = id.toString()
-    client.user.setPresence({game:{name: "" + st}});
-    },10000);
+    client.user.setPresence({game:{name: "gay uwu"}});
   console.log("loaded".green)
 });
 
@@ -158,11 +153,6 @@ client.on("message", async message => {
   if (message.content.indexOf(config.prefix) !== 0) return;
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-
-var crypto = require("crypto");
-var id = crypto.randomBytes(5).toString('hex');
-var st = id.toString()
-await client.user.setPresence({game:{name: "" + st}});
 
   if (command === "reverse") {
     if (config.selfbot === "true") {
