@@ -822,10 +822,9 @@ try{
 	    const { Client, Attachment } = require('discord.js');
 	    const attachment = new Attachment('./output.txt');
             await type(message.channel,true,3);
-	    await sendCodeBlock(message.channel,`${clean(err)}`,"xl","note: (ignore blank errors/outputs)").catch(async (e) => {
+	    await sendCodeBlock(message.channel,`${clean(err)}`,"xl","note: (ignore blank errors/outputs)").catch(async () => {
 	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); 
-            }).catch(async (f) => {  
-	    //f
+            }).catch(async () => {  
             await type(message.channel,false,0);
             return;
       });
@@ -894,6 +893,15 @@ let code = args.join(" ");
 	    });
 	    await type(message.channel,true,3);
 	    });
+		  
+	    const { Client, Attachment } = require('discord.js');
+	    const attachment = new Attachment('./output.txt');
+            await type(message.channel,true,3);
+	    await sendCodeBlock(message.channel,`${output}`,"xl","note: (ignore blank errors/outputs)").catch(async (e) => {
+	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); }).catch(async (f) => {  
+	    //f
+            await type(message.channel,false,0);
+            return;
         }
          });
             
