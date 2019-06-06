@@ -902,6 +902,8 @@ let code = args.join(" ");
 	    //f
             await type(message.channel,false,0);
             return;
+            });
+		  
         }
          });
             
