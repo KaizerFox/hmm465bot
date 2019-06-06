@@ -1,4 +1,4 @@
-//VERSION = 12.0
+//VERSION = 13.0
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -73,13 +73,19 @@ function print(a) {
 
 
 client.on("ready", () => {
-    client.user.setPresence({game:{name: "gay uwu"}});
+ client.user.setPresence({game:{name: "hacking into the mainframe"}});
   console.log("loaded".green)
 });
 
 function sleep(delay) {
   var start = new Date().getTime();
   while (new Date().getTime() < start + delay);
+}
+
+function sendCodeBlock(channel,message,lang,MessageBefore) {
+if(`${lang}` === "") { lang = "xl"; }
+if(`${MessageBefore}` !== "") { channel.send(`${MessageBefore}`); }
+channel.send("```" + lang + "\n" + "" +  message + "\n```");	
 }
 
 client.on('message', async (msg) => {
@@ -784,7 +790,7 @@ return await type(message.channel,false,0);
     if (message.author.id !== ownerID) {
       return;
     }
-    try {
+try{
       const code = args.join(" ");
       let evaled = eval(code);
 
@@ -796,124 +802,12 @@ return await type(message.channel,false,0);
         code: "xl"
       });
       return await type(message.channel,false,0);
-    } catch (err) {
-      await type(message.channel,true,3);
-      await message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-      return await type(message.channel,false,0);
-    }
-  }
-
-  if (command === "lua") {
-    if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
-        return;
-      }
-    }
-    let ownerID = `${config.owner}`
-    if (message.author.id !== ownerID) {
-      return;
-    }
-
-    var errored = false;
-
-    async function ExecuteLua(a) {
-      if (a === true) {
-        var dat = __dirname;
-        const util = require('util');
-        const exec = util.promisify(require('child_process').exec);
-
-        async function ls(b) {
-          const {
-            stdout,
-            stderr
-          } = await exec(`${b}`);
-          if (`${stdout}` == "") {
-            if (`${stderr}` !== "") {
-              output = stderr;
-            } else {
-              output = "output: " + stdout;
-            }
-          } else {
-            output = "output: " + stdout;
-          }
-          if (`${stdout}` == "" | `${stderr}` == "") {
-            output = "output: " + stdout + "\n error: " + stderr;
-          }
-          await type(message.channel,true,3);
-          await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
-          return await type(message.channel,false,0);
-        }
-        await sleep(1);
-        return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/RandomString.lua`);
-      }
-      if (a !== true) {
-        var dat = __dirname;
-        const util = require('util');
-        const exec = util.promisify(require('child_process').exec);
-
-        async function ls(b) {
-          const {
-            stdout,
-            stderr
-          } = await exec(`${b}`);
-          if (`${stdout}` == "") {
-            if (`${stderr}` !== "") {
-              output = stderr;
-            } else {
-              output = "output: " + stdout;
-            }
-          } else {
-            output = "output: " + stdout;
-          }
-          if (`${stdout}` == "" | `${stderr}` == "") {
-            output = "output: " + stdout + "\n error: " + stderr;
-          }
-          await type(message.channel,true,3);
-          await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`lua\n${output}\n\`\`\``);
-          return await type(message.channel,false,0);
-        }
-        await sleep(1);
-        return await ls(`java -cp ./luaj/lib/luaj-jse-3.0.1.jar lua ${dat}/exe.lua`);
-      }
-    }
-
-    try {
-      let code = args.join(" ");
-
-      let low = code.toLowerCase();
-
-      if (`${code}` == "RandomString()") {
-        let cod = `
-local letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
-
-function assing_value(number)
-	if number <= 26 then
-		number = letters[number]
-		else
-		number = number - 27
-	end
-	return number
-end
-
-function create_id(length)
-	local id = ""
-	if length > 0 then
-		for i = 1, length do
-			local number = math.random(1, 36)
-			id = id .. assing_value(number)
-		end
-	end
-	return id
-end
-
-print(create_id(20))
-`
-        var fs = require('fs');
-
-        fs.writeFile('RandomString.lua', `${cod}`, function (err) {
+    } catch (err) { 
+	  const fs = require("fs");
+	  fs.writeFile('output.txt', `${clean(err)}`, async function (err) {
           if (err) {
-            console.log(`${error}`);
-            fs.appendFile('RandomString.lua', `${cod}`, function (err) {
+            await console.log(`${err}`);
+            fs.appendFile('output.txt', `${clean(err)}`, async function (err) {
               if (err) {
                 console.log(`${err}`);
                 var errored = true;
@@ -921,48 +815,25 @@ print(create_id(20))
               if (errored !== true) {
                 sleep(1);
               }
-              sleep(1);
-              return ExecuteLua(true);
-            });
-          }
-          return ExecuteLua(true);
-        });
-        return;
-      }
-
-
-      if (low.includes("os.execute") | low.includes("os.time") | low.includes("os.date") | low.includes("os.clock") | low.includes("os.difftime") | low.includes("os.getenv") |
-        low.includes("os.exit") | low.includes("os.remove") | low.includes("os.rename") | low.includes("os.setlocale") | low.includes("exe") | low.includes("LoadLibrary") | low.includes("bininsert") |
-        low.includes("binsearch") | low.includes("io") | low.includes("file:") | low.includes("platform") | low.includes("require") | low.includes("getfenv") | low.includes("import") | low.includes("setfenv") | low.includes("debug") |
-        low.includes("module") | low.includes("package") | low.includes("loadstring") | low.includes("while true do") | low.includes("repeat")) {
-        code = "print('a function you did is blacklisted, contact Hmm465 if you have any questions')";
-      }
-
-      var fs = require('fs');
-
-      fs.writeFile('exe.lua', `${code}`, function (err) {
-        if (err) {
-          console.log(`${error}`);
-          fs.appendFile('exe.lua', `${code}`, function (err) {
-            if (err) {
-              console.log(`${err}`);
-              var errored = true;
-            }
-            if (errored !== true) {
-              console.log('Saved!');
-              sleep(1);
-            }
             sleep(1);
-            return ExecuteLua();
-          });
-        }
-        return ExecuteLua();
+            })
+            }
+    });
+	    const { Client, Attachment } = require('discord.js');
+	    const attachment = new Attachment('./output.txt');
+            await type(message.channel,true,3);
+	    await sendCodeBlock(message.channel,`${clean(err)}`,"xl","note: (ignore blank errors/outputs)").catch(async (e) => {
+	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); 
+            }).catch(async (f) => {  
+	    //f
+            await type(message.channel,false,0);
+            return;
       });
-    } catch (e) {
-      return console.log(`${e.message}`);
+	    
     }
+   
+      
   }
-
 	
 	
 if (command === "cmd") {
@@ -989,17 +860,17 @@ let code = args.join(" ");
           } = await exec(`${b}`);
           if (`${stdout}` == "") {
             if (`${stderr}` !== "") {
-              output = stderr;
+              var output = stderr;
             } else {
-              output = "output: " + stdout;
+              var output = "output: " + stdout;
             }
           } else {
-            output = "output: " + stdout;
+            var output = "output: " + stdout;
           }
           if (`${stdout}` == "" | `${stderr}` == "") {
-            output = "output: " + stdout + "\n error: " + stderr;
+            var output = "output: " + stdout + "\n error: " + stderr;
           }
-         
+		 
          fs.writeFile('output.txt', `${output}`, async function (err) {
           if (err) {
             await console.log(`${err}`);
@@ -1015,21 +886,19 @@ let code = args.join(" ");
             const { Client, Attachment } = require('discord.js');
 	    const attachment = new Attachment('./output.txt');
             await type(message.channel,true,3);
-	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment);
-	    return await type(message.channel,false,0);
-            });
-          }
-	    sleep(1);
-            const { Client, Attachment } = require('discord.js');
-	    const attachment = new Attachment('./output.txt');
-            await type(message.channel,true,3);
-	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment);
-            return await type(message.channel,false,0);
-        });
-    
+	    await sendCodeBlock(message.channel,`${output}`,"xl","note: (ignore blank errors/outputs)").catch(async (e) => {
+	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); }).catch(async (f) => {  
+	    //f
+            await type(message.channel,false,0);
+            return;
+	    });
+	    await type(message.channel,true,3);
+	    });
         }
+         });
             
 ls(`${code}`);
+}
 }
 
 
