@@ -1,4 +1,4 @@
-//VERSION = 13.1
+//VERSION = 13.2
 
 //https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
 
@@ -73,7 +73,7 @@ function print(a) {
 
 
 client.on("ready", () => {
- client.user.setPresence({game:{name: "hacking into the mainframe"}});
+ client.user.setPresence({game:{name: "no one is around to help"}});
   console.log("loaded".green)
 });
 
@@ -780,59 +780,28 @@ return await type(message.channel,false,0);
       return text;
   }
 
-  if (command === "eval") {
-    if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
-        return;
-      }
-    }
-    let ownerID = `${config.owner}`
-    if (message.author.id !== ownerID) {
-      return;
-    }
-try{
+if(command === "eval") {
+        if (config.selfbot === "true") {
+          if (message.author.id !== config.ownerID) {
+                  return;
+        }
+        }
+let ownerID = `${config.owner}`
+if (message.author.id !== ownerID) {
+return;
+}     
+      try {
       const code = args.join(" ");
       let evaled = eval(code);
 
       if (typeof evaled !== "string")
         evaled = require("util").inspect(evaled);
-       
-      await type(message.channel,true,3);
-      await message.channel.send(clean(evaled), {
-        code: "xl"
-      });
-      return await type(message.channel,false,0);
-    } catch (err) { 
-	  const fs = require("fs");
-	  fs.writeFile('output.txt', `${clean(err)}`, async function (err) {
-          if (err) {
-            await console.log(`${err}`);
-            fs.appendFile('output.txt', `${clean(err)}`, async function (err) {
-              if (err) {
-                console.log(`${err}`);
-                var errored = true;
-              }
-              if (errored !== true) {
-                sleep(1);
-              }
-            sleep(1);
-            })
-            }
-    });
-	    const { Client, Attachment } = require('discord.js');
-	    const attachment = new Attachment('./output.txt');
-            await type(message.channel,true,3);
-	    await sendCodeBlock(message.channel,`${clean(err)}`,"xl","note: (ignore blank errors/outputs)").catch(async () => {
-	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); 
-            }).catch(async () => {  
-            await type(message.channel,false,0);
-            return;
-      });
-	    
+        sendCodeBlock(message.channel,`${clean(evaled)}`,"xl")
+    } catch (err) {
+    sendCodeBlock(message.channel,`${clean(err)}`,"xl")
     }
-   
-      
   }
+
 	
 	
 if (command === "cmd") {
@@ -846,71 +815,31 @@ if (command === "cmd") {
       return;
     }
 let code = args.join(" ");
-	
+
 	const util = require('util');
         const exec = util.promisify(require('child_process').exec);
-	
-	  var fs = require('fs');
-	
-	 async function ls(b) {
+
+        async function ls(b) {
           const {
             stdout,
             stderr
           } = await exec(`${b}`);
           if (`${stdout}` == "") {
             if (`${stderr}` !== "") {
-              var output = stderr;
+              output = stderr;
             } else {
-              var output = "output: " + stdout;
+              output = "output: " + stdout;
             }
           } else {
-            var output = "output: " + stdout;
+            output = "output: " + stdout;
           }
           if (`${stdout}` == "" | `${stderr}` == "") {
-            var output = "output: " + stdout + "\n error: " + stderr;
+            output = "output: " + stdout + "\n error: " + stderr;
           }
-		 
-         fs.writeFile('output.txt', `${output}`, async function (err) {
-          if (err) {
-            await console.log(`${err}`);
-            fs.appendFile('output.txt', `${output}`, async function (err) {
-              if (err) {
-                console.log(`${err}`);
-                var errored = true;
-              }
-              if (errored !== true) {
-                sleep(1);
-              }
-            sleep(1);
-            const { Client, Attachment } = require('discord.js');
-	    const attachment = new Attachment('./output.txt');
-            await type(message.channel,true,3);
-	    await sendCodeBlock(message.channel,`${output}`,"xl","note: (ignore blank errors/outputs)").catch(async (e) => {
-	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); }).catch(async (f) => {  
-	    //f
-            await type(message.channel,false,0);
-            return;
-	    });
-	    await type(message.channel,true,3);
-	    });
-		  
-	    const { Client, Attachment } = require('discord.js');
-	    const attachment = new Attachment('./output.txt');
-            await type(message.channel,true,3);
-	    await sendCodeBlock(message.channel,`${output}`,"xl","note: (ignore blank errors/outputs)").catch(async (e) => {
-	    await message.channel.send("note: (ignore blank errors/outputs)\n", attachment); }).catch(async (f) => {  
-	    //f
-            await type(message.channel,false,0);
-            return;
-            });
-		  
+          return await message.channel.send("note: (ignore blank errors/outputs)\n" + `\`\`\`cmd\n${output}\n\`\`\``);
         }
-         });
-            
 ls(`${code}`);
 }
-}
-
 
 
 
