@@ -1,6 +1,6 @@
-//VERSION = 13.2
+//VERSION = 13.3
 
-//https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847
+//https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -73,7 +73,7 @@ function print(a) {
 
 
 client.on("ready", () => {
- client.user.setPresence({game:{name: "no one is around to help"}});
+ client.user.setPresence({game:{name: "with code"}});
   console.log("loaded".green)
 });
 
