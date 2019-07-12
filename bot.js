@@ -1,4 +1,4 @@
-//VERSION = 13.4
+//VERSION = 13.3
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -110,7 +110,7 @@ client.on('message', async (msg) => {
       return;
     }
     msg.delete();
-    if(`${config.self}` === `true`) {
+    if(`${config.selfbot}` === `true`) {
     try {
       let args = msg.content.split(' ');
 
