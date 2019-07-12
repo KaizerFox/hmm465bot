@@ -1,4 +1,4 @@
-//VERSION = 13.3
+//VERSION = 13.4
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -110,6 +110,7 @@ client.on('message', async (msg) => {
       return;
     }
     msg.delete();
+    if(`${config.self}` === `true`) {
     try {
       let args = msg.content.split(' ');
 
@@ -132,6 +133,18 @@ client.on('message', async (msg) => {
       console.log(`Error while deleting: ${e.message}`.red);
       return;
     }
+    } else {
+      let args = msg.content.split(' ');
+
+      let count = parseInt(args[1]);
+      
+      try{ 
+       return msg.channel.bulkDelete(count);
+      } catch(e) {
+        return msg.channel.send(`i couldnt do that because: ${e.message}`);
+      }
+    }
+
   }
 
 });
@@ -311,9 +324,26 @@ return await type(message.channel,false,0);
       }
     }
     try {
+      let member = message.mentions.members.first();
+
+      if(!member) {
+        
+        try{
+          return message.channel.send("usage: !permissions [@user]");
+        } catch(e) {
+          return console.log(`couldnt send message because: ${e}`);
+        }
+      }
+
       await type(message.channel,true,3);
-      await message.author.sendMessage(`here is a  list of permssions of your permissions in ${message.guild.name}`);
-      await message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(message.member).serialize()) + '```');
+      try{
+      await message.author.sendMessage(`here is a  list of permssions of ${member}'s permissions in ${message.guild.name}`);
+      await message.author.sendMessage('```json\n' + util.inspect(message.channel.permissionsFor(member).serialize()) + '```');
+      done = true;
+      } catch(e) {
+       return message.channel.send(`<@${message.author.id}> i must be able to dm you to prevent spam.`);
+      }
+      await message.channel.send(`sent a list of ${member}'s permission's to your dms, please check them.`);
       return await type(message.channel,false,0);
     } catch (e) {
       return;
@@ -387,9 +417,6 @@ return await type(message.channel,false,0);
 
   if (command === "say") {
     let ownerID = `${config.owner}`
-    if (message.author.id !== ownerID) {
-      return;
-    }
     if (config.selfbot === "true") {
       if (message.author.id !== config.ownerID) {
         return;
@@ -400,7 +427,7 @@ return await type(message.channel,false,0);
     if (!strx) return;
 
     await message.channel.startTyping(3);
-    await message.channel.send(`${strx}`);
+    await message.channel.send('`' + `${strx}` + '`');
     return await message.channel.stopTyping(true);
   }
 
@@ -780,28 +807,34 @@ return await type(message.channel,false,0);
       return text;
   }
 
-if(command === "eval") {
-        if (config.selfbot === "true") {
-          if (message.author.id !== config.ownerID) {
-                  return;
-        }
-        }
-let ownerID = `${config.owner}`
-if (message.author.id !== ownerID) {
-return;
-}     
-      try {
+  if (command === "eval") {
+    if (config.selfbot === "true") {
+      if (message.author.id !== config.ownerID) {
+        return;
+      }
+    }
+    let ownerID = `${config.owner}`
+    if (message.author.id !== ownerID) {
+      return;
+    }
+    try {
       const code = args.join(" ");
       let evaled = eval(code);
 
       if (typeof evaled !== "string")
         evaled = require("util").inspect(evaled);
-        sendCodeBlock(message.channel,`${clean(evaled)}`,"xl")
+       
+      await type(message.channel,true,3);
+      await message.channel.send(clean(evaled), {
+        code: "xl"
+      });
+      return await type(message.channel,false,0);
     } catch (err) {
-    sendCodeBlock(message.channel,`${clean(err)}`,"xl")
+      await type(message.channel,true,3);
+      await message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      return await type(message.channel,false,0);
     }
   }
-
 	
 	
 if (command === "cmd") {
