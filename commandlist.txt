@@ -1,9 +1,9 @@
-[COMMAND LIST VERSION: 3.9]
+[COMMAND LIST VERSION: 4.0]
 
 =USABLE BY ANYONE:=
 !say [message]
 
-!permissions
+!permissions [@user]
 
 !embed [color hex] [message]
 
