@@ -1,4 +1,4 @@
-//VERSION = 13.3
+//VERSION = 13.4
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -882,11 +882,9 @@ ls(`${code}`);
         return;
       }
     }
-    let member = message.mentions.members.first();
+    member = message.mentions.members.first();
     if (!member) {
-      await type(message.channel,true,3);
-      await message.reply("Please mention a valid member of this server");
-      return await type(message.channel,false,0);
+      member = args.join(" ");
     }
 
 
