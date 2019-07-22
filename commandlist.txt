@@ -1,6 +1,8 @@
-[COMMAND LIST VERSION: 4.1]
+[COMMAND LIST VERSION: 4.2]
 
 =USABLE BY ANYONE:=
+!loadinglinegen
+
 !joinmessage [@user]
 
 !say [message]
