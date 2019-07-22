@@ -281,6 +281,15 @@ client.on("message", async message => {
     "is here to kick butt and chew bubblegum. And they're is all out of gum.",
     "has joined. Stay a while and listen!",
     ]
+ 
+  var loadinglines = [
+  "Wobbling to 299%","DISCORD REQUIRES MORE MINERALS","Untap, Upkeep, Draw","Traveling to Hanamura","TIME'S UP - LET'S DO THIS!","This loading is a line","They see me loading, They waiting",
+  "Start your engines","Skipping cutscenes","TOOMANYENEMIES","Shuffling the deck","Reviving dead memes","Returning the slab","Recombobulating Discombobulators","now with scratch and sniff",
+  "Now with 100% more Screenshare!","Dropping in Pochinki","Looking for the power button","Look behind you","Locating Wumpus","Loading your digital hug","Loading Simulation","Jumping to hyperspace",
+  "Is this thing on?","Initiating launch sequence","Initializing socialization","If you are reading this, you can read","I swear it's around here somewhere...","i need healing","how do i turn this thing on",
+  "Loading machine broke","Get ready for a surprise!","Finishing this senta...","Dusting the cobwebs","Do you even notice these?","Opening the loading bay doors","Discord is my city","Disconnecting from Reality",
+  "Charging spirit bomb","Charging Limit Break","Calibrating flux capacitors","Buckle up!","Assembling Voltron","Are we there yet?","A brawl is surely brewing!"
+  ]
 
   if (command === "ping") {
     if (config.selfbot === "true") {
@@ -1070,6 +1079,18 @@ await type(message.channel,true,3);
     await type(message.channel,true,3);
     let owo = `${member} ` + joins[Math.floor(Math.random() * joins.length)];
     sendRandomEmbed(message.channel,"generated join message",`${owo}`);
+    return await type(message.channel,false,0);
+  }
+
+  if (command === "loadinglinegen") {
+    if (config.selfbot === "true") {
+      if (message.author.id !== config.owner) {
+        return;
+      }
+    }
+    await type(message.channel,true,3);
+    let owo =  loadinglines[Math.floor(Math.random() * loadinglines.length)];
+    sendRandomEmbed(message.channel,"generated loading line",`${owo}`);
     return await type(message.channel,false,0);
   }
 
