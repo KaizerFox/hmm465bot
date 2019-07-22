@@ -1,4 +1,4 @@
-//VERSION = 13.4
+//VERSION = 13.5
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -36,6 +36,7 @@ return await channel.stopTyping(true);
 //to type do function: type(message.channel,true,3)
 //stop typing is: type(message.channel,false,0)
 
+let ownerID = `${config.owner}`;
 
 function UpdateFile(FileName, Link) {
   let a = FileName;
@@ -88,8 +89,16 @@ if(`${MessageBefore}` !== "") { channel.send(`${MessageBefore}`); }
 channel.send("```" + lang + "\n" + "" +  message + "\n```");	
 }
 
+function sendRandomEmbed(channel,title,message) {
+  var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
+  error = new Discord.RichEmbed()
+    .setColor(RandomNoHash)
+    .addField(`${title}`, `${message}`),
+    await channel.sendEmbed(error)
+}
+//sendRandomEmbed(channel,"hello","hi")
+
 client.on('message', async (msg) => {
-  let ownerID = `${config.owner}`
   let blacklist = `${config.blacklist}`
 
   //if (msg.author.id !== ownerID) {
@@ -100,7 +109,6 @@ client.on('message', async (msg) => {
 
 
   if (msg.content === `${config.prefix}` + 'prune') {
-    let ownerID = `${config.owner}`
     if (msg.author.id !== ownerID) {
       return;
     }
@@ -175,7 +183,7 @@ client.on("message", async message => {
 
   if (command === "reverse") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -239,9 +247,8 @@ client.on("message", async message => {
     }, 10000);
   }
 
-  let ownerID = `${config.owner}`
 
-  //config.owner and config.ownerID are both the same.
+  //config.owner and config.owner are both the same.
 
 
   var fortunes = [
@@ -256,9 +263,28 @@ client.on("message", async message => {
     "ran away",
     "took your needle, and infected **__you__**"
   ]
+
+  var joins = [
+    "just joined the server - glhf!",
+    "just joined. Everyone, look busy!",
+    "just joined. Can I get a heal?",
+    "joined your party.",
+    "joined. You must construct additional pylons.",
+    "just joined. Hide your bananas.",
+    "just arrived. Seems OP - please nerf.",
+    "just slid into the server.",
+    "hopped into the server. Kangaroo!!",
+    "just showed up. Hold my beer.",
+    "has joined the server! It's super effective!",
+    "is here, as the prophecy foretold.",
+    "has arrived. Party's over.",
+    "is here to kick butt and chew bubblegum. And they're is all out of gum.",
+    "has joined. Stay a while and listen!",
+    ]
+
   if (command === "ping") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -271,7 +297,7 @@ client.on("message", async message => {
 
   if (command === "cuddle") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -286,7 +312,7 @@ client.on("message", async message => {
 
     if (`${user}` === `<@297803507468206080>`) {
       console.log("user is nicole");
-      if (`${message.author}` === `<@${config.ownerID}>`) {
+      if (`${message.author}` === `<@${config.owner}>`) {
         console.log("its only me trying to cuddle him");
 	await type(message.channel,true,3);
         await message.channel.send(`${message.author} gave the biggest cuddle to ${user}`);
@@ -319,7 +345,7 @@ return await type(message.channel,false,0);
 
   if (command === 'permissions') {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -354,7 +380,7 @@ return await type(message.channel,false,0);
 
   if (command === "help") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -378,7 +404,7 @@ return await type(message.channel,false,0);
 
   if (command === "sourcecode") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -395,10 +421,10 @@ return await type(message.channel,false,0);
     }
   }
 
-
+  
   if (command === "invite") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -408,7 +434,7 @@ return await type(message.channel,false,0);
     }
     try {
       await type(message.channel,true,3);
-      await message.channel.send("https://discordapp.com/oauth2/authorize?client_id=546011699376029697&scope=bot&permissions=2146958847");
+      await message.channel.send("https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999");
       return await type(message.channel,false,0);
     } catch (e) {
       return;
@@ -418,7 +444,7 @@ return await type(message.channel,false,0);
   if (command === "say") {
     let ownerID = `${config.owner}`
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -437,7 +463,7 @@ return await type(message.channel,false,0);
       return;
     }
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -461,13 +487,13 @@ return await type(message.channel,false,0);
 
   if (command === "kick") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
 	 
 	  
-    if (message.author.id !== config.ownerID) {
+    if (message.author.id !== config.owner) {
       if (!message.member.hasPermission("KICK_MEMBERS")) {
 	await type(message.channel,true,3);
         await message.channel.send("Sorry, you don't have permissions to use this!");
@@ -476,16 +502,15 @@ return await type(message.channel,false,0);
     }
 
     let member = message.mentions.members.first();
+    if (!member) {
+      await type(message.channel,true,3);
+      await message.channel.send("Please mention a valid member of this server");
+      return await type(message.channel,false,0);
+    }
 
     if (`${message.author.id}` === `${member.id}`) {
       await type(message.channel,true,3);
       await message.channel.send("i'm not sure why you would kick yourself");
-      return await type(message.channel,false,0);
-    }
-
-    if (!member) {
-      await type(message.channel,true,3);
-      await message.channel.send("Please mention a valid member of this server");
       return await type(message.channel,false,0);
     }
 
@@ -516,7 +541,7 @@ return await type(message.channel,false,0);
 
   if (command === "embed") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -550,11 +575,11 @@ return await type(message.channel,false,0);
 
   if (command === "ban") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
-    if (message.author.id !== config.ownerID) {
+    if (message.author.id !== config.owner) {
       if (!message.member.hasPermission("BAN_MEMBERS")) {
 	await type(message.channel,true,3);
         var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
@@ -626,12 +651,12 @@ return await type(message.channel,false,0);
 
   if (command === "warn") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
 
-    if (message.author.id !== config.ownerID) {
+    if (message.author.id !== config.owner) {
       if (!message.member.hasPermission("ADMINISTRATOR")) {
         return await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
       }
@@ -649,13 +674,13 @@ return await type(message.channel,false,0);
     console.log(`${member}`);
     console.log(`${reason}`);
 
-    if (`${member}` === `<@${config.ownerID}>`) {
+    if (`${member}` === `<@${config.owner}>`) {
       await type(message.channel,true,3);
       await message.channel.send(`<@${message.author.id}>, you can't warn the bot owner`);
       return await type(message.channel,false,0);
     }
 
-    if (message.author.id !== config.ownerID) {
+    if (message.author.id !== config.owner) {
       if (member.hasPermission("ADMINISTRATOR")) {
 	await type(message.channel,true,3);
         await message.channel.send(`<@${member.id}> has admin, you can't warn an admin`);
@@ -678,12 +703,12 @@ return await type(message.channel,false,0);
 
   if (command === "dm") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
 
-    if (message.author.id !== config.ownerID) {
+    if (message.author.id !== config.owner) {
       if (!message.member.hasPermission("ADMINISTRATOR")) {
 	await type(message.channel,true,3);
         await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
@@ -703,7 +728,7 @@ return await type(message.channel,false,0);
     console.log(`${member}`);
     console.log(`${mess}`);
 
-    if (`${member}` === `<@${config.ownerID}>`) {
+    if (`${member}` === `<@${config.owner}>`) {
       await type(message.channel,true,3);
       await message.channel.send(`<@${message.author.id}>, you can't dm the bot owner`);
       return await type(message.channel,false,0);
@@ -724,7 +749,7 @@ return await type(message.channel,false,0);
 
   if (command === "8ball") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -739,7 +764,7 @@ return await type(message.channel,false,0);
 
   if (command === "infect") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -763,11 +788,11 @@ return await type(message.channel,false,0);
 
   if (command === "unban") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
-    if (message.author.id !== config.ownerID) {
+    if (message.author.id !== config.owner) {
       if (!message.member.hasPermission("ADMINISTRATOR"))
         return await (
           error = new Discord.RichEmbed()
@@ -809,7 +834,7 @@ return await type(message.channel,false,0);
 
   if (command === "eval") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -839,7 +864,7 @@ return await type(message.channel,false,0);
 	
 if (command === "cmd") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -878,7 +903,7 @@ ls(`${code}`);
 
   if (command === "gay") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -914,7 +939,7 @@ return await type(message.channel,false,0);
 
   if (command === "furry") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -937,7 +962,7 @@ return await type(message.channel,false,0);
 
   if (command === "lesbian") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -961,7 +986,7 @@ await type(message.channel,true,3);
 
   if (command === "iq") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -1002,7 +1027,7 @@ await type(message.channel,true,3);
 	
   if (command === "dmall") {
     if (config.selfbot === "true") {
-      if (message.author.id !== config.ownerID) {
+      if (message.author.id !== config.owner) {
         return;
       }
     }
@@ -1030,6 +1055,24 @@ await type(message.channel,true,3);
     });
   }
 
+  if (command === "joinmessage") {
+    if (config.selfbot === "true") {
+      if (message.author.id !== config.owner) {
+        return;
+      }
+    }
+    let member = message.mentions.members.first();
+    if (!member) {
+	    await type(message.channel,true,3);
+      await message.reply("usage: !joinmeessage [@user]");
+	    return await type(message.channel,false,0);
+    }
+    await type(message.channel,true,3);
+    let owo = `${member} ` + infec[Math.floor(Math.random() * infec.length)];
+    sendRandomEmbed(message.channel,"generated join message",`${owo}`);
+    await message.channel.send(`${member} ` + infec[Math.floor(Math.random() * infec.length)]);
+    return await type(message.channel,false,0);
+  }
 
 });
 
