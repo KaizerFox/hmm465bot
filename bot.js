@@ -89,7 +89,7 @@ if(`${MessageBefore}` !== "") { channel.send(`${MessageBefore}`); }
 channel.send("```" + lang + "\n" + "" +  message + "\n```");	
 }
 
-function sendRandomEmbed(channel,title,message) {
+async function sendRandomEmbed(channel,title,message) {
   var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
   error = new Discord.RichEmbed()
     .setColor(RandomNoHash)
