@@ -1068,9 +1068,8 @@ await type(message.channel,true,3);
 	    return await type(message.channel,false,0);
     }
     await type(message.channel,true,3);
-    let owo = `${member} ` + infec[Math.floor(Math.random() * infec.length)];
+    let owo = `${member} ` + joins[Math.floor(Math.random() * joins.length)];
     sendRandomEmbed(message.channel,"generated join message",`${owo}`);
-    await message.channel.send(`${member} ` + infec[Math.floor(Math.random() * infec.length)]);
     return await type(message.channel,false,0);
   }
 
