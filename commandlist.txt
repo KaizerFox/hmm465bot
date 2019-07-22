@@ -1,6 +1,8 @@
-[COMMAND LIST VERSION: 4.0]
+[COMMAND LIST VERSION: 4.1]
 
 =USABLE BY ANYONE:=
+!joinmessage [@user]
+
 !say [message]
 
 !permissions [@user]
