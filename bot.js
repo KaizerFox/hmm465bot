@@ -1,4 +1,4 @@
-//VERSION = 13.5
+//VERSION = 13.6
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -443,7 +443,7 @@ return await type(message.channel,false,0);
     }
     try {
       await type(message.channel,true,3);
-      await message.channel.send("https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999");
+      await message.channel.send("<https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999>");
       return await type(message.channel,false,0);
     } catch (e) {
       return;
