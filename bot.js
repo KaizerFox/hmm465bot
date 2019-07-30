@@ -1,4 +1,4 @@
-//VERSION = 13.6
+//VERSION = 13.7
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -67,6 +67,11 @@ UpdateFile("updater.exe", "https://github.com/Hmm465/updater/blob/master/updater
 
 UpdateFile("commandlist.txt", "https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt");
 
+UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package-lock.json");
+
+UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package.json");
+
+
 function print(a) {
   console.log(`${a}`);
 }
@@ -76,6 +81,7 @@ function print(a) {
 client.on("ready", () => {
  client.user.setPresence({game:{name: "with code"}});
   console.log("loaded".green)
+  console.log("remember to run updater.exe when you think this is updated".yellow)
 });
 
 function sleep(delay) {
@@ -398,12 +404,9 @@ return await type(message.channel,false,0);
       return;
     }
     try {
-      await type(message.channel,true,3);
-      var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
-      embed = new Discord.RichEmbed()
-        .setColor(RandomNoHash)
-        .addField("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt"),
-        await message.channel.sendEmbed(embed)
+  await type(message.channel,true,3);
+  var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
+  await message.channel.send("<https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt>");
 	await type(message.channel,false,0)
       return;
     } catch (e) {
@@ -423,7 +426,7 @@ return await type(message.channel,false,0);
     }
     try {
       await type(message.channel,true,3);
-      await message.channel.send("https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js");
+      await message.channel.send("heres a list of my commands: \n https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js");
       return await type(message.channel,false,0);
     } catch (e) {
       return;
