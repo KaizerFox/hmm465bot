@@ -1,4 +1,4 @@
-//VERSION = 13.8
+//VERSION = 13.9
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -71,7 +71,6 @@ UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry
 
 UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package.json");
 
-
 function print(a) {
   console.log(`${a}`);
 }
@@ -105,6 +104,7 @@ async function sendRandomEmbed(channel,title,message) {
 //sendRandomEmbed(channel,"hello","hi")
 
 client.on('message', async (msg) => {
+  console.log(`tag: ${msg.author.tag} \n content: ${msg.content} \n channel: ${msg.channel.name}`);
   let blacklist = `${config.blacklist}`
 
   //if (msg.author.id !== ownerID) {
