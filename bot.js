@@ -1,4 +1,4 @@
-//VERSION = 13.7
+//VERSION = 13.8
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -426,7 +426,7 @@ return await type(message.channel,false,0);
     }
     try {
       await type(message.channel,true,3);
-      await message.channel.send("heres a list of my commands: \n https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js");
+      await message.channel.send("<https://raw.githubusercontent.com/Hmm465/hmm465bot/master/bot.js>");
       return await type(message.channel,false,0);
     } catch (e) {
       return;
