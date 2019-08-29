@@ -1,4 +1,4 @@
-//VERSION = 14.2
+//VERSION = 14.3
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -101,6 +101,8 @@ UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm4
 
 UpdateFile(".gitignore", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/.gitignore");
 
+UpdateFile("bot.js", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/bot.js");
+
 
 function print(a) {
   console.log(`${a}`);
@@ -109,10 +111,9 @@ function print(a) {
 
 
 client.on("ready", () => {
- client.user.setPresence({game:{name: "with code"}});
+  client.user.setPresence({game:{name: "with code"}});
   console.log("loaded".green)
   console.log("remember to run updater.exe when you think this is updated".yellow)
-  OpenProgram("run updater.exe");
 });
 
 function sleep(delay) {
