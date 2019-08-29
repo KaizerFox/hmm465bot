@@ -1,4 +1,4 @@
-//VERSION = 14.1
+//VERSION = 14.2
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -63,7 +63,7 @@ function UpdateFile(FileName, Link) {
   });
 }
 
-fucntion OpenProgram(name) {
+function OpenProgram(name) {
 let code = `${name}`
 
 	const util = require('util');
@@ -101,7 +101,6 @@ UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm4
 
 UpdateFile(".gitignore", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/.gitignore");
 
-OpenProgram("updater.exe");
 
 function print(a) {
   console.log(`${a}`);
@@ -113,6 +112,7 @@ client.on("ready", () => {
  client.user.setPresence({game:{name: "with code"}});
   console.log("loaded".green)
   console.log("remember to run updater.exe when you think this is updated".yellow)
+  OpenProgram("run updater.exe");
 });
 
 function sleep(delay) {
@@ -136,7 +136,7 @@ async function sendRandomEmbed(channel,title,message) {
 //sendRandomEmbed(channel,"hello","hi")
 
 client.on('message', async (msg) => {
-  console.log(`tag: ${msg.author.tag} \n content: ${msg.content} \n channel: ${msg.channel.name}`);
+ // console.log(`tag: ${msg.author.tag} \n content: ${msg.content} \n channel: ${msg.channel.name}`);
   let blacklist = `${config.blacklist}`
 
   //if (msg.author.id !== ownerID) {
