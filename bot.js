@@ -1,4 +1,4 @@
-//VERSION = 14.0
+//VERSION = 14.1
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -63,6 +63,34 @@ function UpdateFile(FileName, Link) {
   });
 }
 
+fucntion OpenProgram(name) {
+let code = `${name}`
+
+	const util = require('util');
+        const exec = util.promisify(require('child_process').exec);
+
+        async function ls(b) {
+          const {
+            stdout,
+            stderr
+          } = await exec(`${b}`);
+          if (`${stdout}` == "") {
+            if (`${stderr}` !== "") {
+              output = stderr;
+            } else {
+              output = "output: " + stdout;
+            }
+          } else {
+            output = "output: " + stdout;
+          }
+          if (`${stdout}` == "" | `${stderr}` == "") {
+            output = "output: " + stdout + "\n error: " + stderr;
+          }
+          return await console.log(`${output}`);
+        }
+ls(`${code}`);		
+}
+
 UpdateFile("updater.exe", "https://github.com/Hmm465/updater/blob/master/updater.exe?raw=true");
 
 UpdateFile("commandlist.txt", "https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt");
@@ -72,6 +100,8 @@ UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry
 UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package.json");
 
 UpdateFile(".gitignore", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/.gitignore");
+
+OpenProgram("updater.exe");
 
 function print(a) {
   console.log(`${a}`);
