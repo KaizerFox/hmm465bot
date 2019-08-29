@@ -1,4 +1,4 @@
-//VERSION = 13.9
+//VERSION = 14.0
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -70,6 +70,8 @@ UpdateFile("commandlist.txt", "https://raw.githubusercontent.com/Hmm465/hmm465bo
 UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package-lock.json");
 
 UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package.json");
+
+UpdateFile(".gitignore", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/.gitignore");
 
 function print(a) {
   console.log(`${a}`);
