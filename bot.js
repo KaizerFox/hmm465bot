@@ -1,4 +1,4 @@
-//VERSION = 14.3
+//VERSION = 14.4
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -91,8 +91,6 @@ let code = `${name}`
 ls(`${code}`);		
 }
 
-UpdateFile("updater.exe", "https://github.com/Hmm465/updater/blob/master/updater.exe?raw=true");
-
 UpdateFile("commandlist.txt", "https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt");
 
 UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package-lock.json");
@@ -111,9 +109,8 @@ function print(a) {
 
 
 client.on("ready", () => {
-  client.user.setPresence({game:{name: "with code"}});
+ client.user.setPresence({game:{name: "with code"}});
   console.log("loaded".green)
-  console.log("remember to run updater.exe when you think this is updated".yellow)
 });
 
 function sleep(delay) {
