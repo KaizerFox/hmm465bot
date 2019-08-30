@@ -6,5 +6,5 @@
 "owner":"[your user id]",
 "roleToDisco": "[role name]",
 "MusicCommands": "false",
-"DevMode": "true"
+"DevMode": "false"
 }
