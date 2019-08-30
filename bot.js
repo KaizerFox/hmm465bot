@@ -1,4 +1,4 @@
-//VERSION = 14.6
+//VERSION = 14.7
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -13,6 +13,7 @@ const util = require("util");
 const io = require('@pm2/io');
 const yt = require('ytdl-core');
 let yiff = require('yiff');
+let cloudinary = require("cloudinary");
 
 io.init({
   metrics: {
@@ -92,16 +93,17 @@ let code = `${name}`
 ls(`${code}`);		
 }
 
+if(config.DevMode === false) {
+  print("updating stuff...");
+  UpdateFile("bot.js", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/bot.js");
+  UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package-lock.json");
+  UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package.json");
+  print("done.");
+} else { print("not updating the bot and packages."); }
+
 UpdateFile("commandlist.txt", "https://raw.githubusercontent.com/Hmm465/hmm465bot/master/commandlist.txt");
 
-UpdateFile("package-lock.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package-lock.json");
-
-UpdateFile("package.json", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/package.json");
-
 UpdateFile(".gitignore", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/.gitignore");
-
-UpdateFile("bot.js", "https://raw.githubusercontent.com/JakobTheFurry/hmm465bot/master/bot.js");
-
 
 function print(a) {
   console.log(`${a}`);
@@ -509,6 +511,11 @@ if(command === "yiff") {
     } catch (e) {
       return;
     }
+  }
+
+  if(command === "invert"){
+
+
   }
 
   if (command === "say") {
