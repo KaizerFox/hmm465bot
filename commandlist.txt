@@ -1,6 +1,8 @@
-[COMMAND LIST VERSION: 4.2]
+[COMMAND LIST VERSION: 4.3]
 
 =USABLE BY ANYONE:=
+!yiff [whatever]
+
 !loadinglinegen
 
 !joinmessage [@user]
