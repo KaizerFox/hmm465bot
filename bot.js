@@ -401,9 +401,11 @@ if(command === "yiff") {
     }
   }
   if(message.channel.nsfw === true) {
-  await yiff.e621.CubFilter(prop).then(async(r) => {
+  const strx = args.join(" ");
+  await yiff.e621.CubFilter(`${strx}`).then(async(r) => {
+    var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
     const embed = new Discord.RichEmbed()
-        .setColor(config.green)
+        .setColor(RandomNoHash)
         .setAuthor("e621")
         .setDescription(`${r.tags}`)
         .setImage(r.image)
