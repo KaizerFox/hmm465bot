@@ -1,4 +1,4 @@
-//VERSION = 14.5
+//VERSION = 14.6
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -400,7 +400,7 @@ if(command === "yiff") {
       return;
     }
   }
-  if(message.channel.nsfw === true | message.channel.type === "DMChannel") {
+  if(message.channel.nsfw === true || message.channel.type === "dm") {
   const strx = args.join(" ");
   await yiff.e621.CubFilter(`${strx}`).then(async(r) => {
     var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
