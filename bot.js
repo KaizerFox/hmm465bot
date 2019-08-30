@@ -1,4 +1,4 @@
-//VERSION = 14.4
+//VERSION = 14.5
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -12,6 +12,7 @@ const asyncio = require("asyncio");
 const util = require("util");
 const io = require('@pm2/io');
 const yt = require('ytdl-core');
+let yiff = require('yiff');
 
 io.init({
   metrics: {
@@ -380,6 +381,11 @@ client.on("message", async message => {
   }
 
 if(command === "randomstring") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.owner) {
+      return;
+    }
+  }
 var crypto = require("crypto");
 var id = crypto.randomBytes(20).toString('hex');
 var st = id.toString()
@@ -387,6 +393,26 @@ await type(message.channel,true,3);
 await message.channel.send("" + st);
 return await type(message.channel,false,0);
 }
+
+if(command === "yiff") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.owner) {
+      return;
+    }
+  }
+  if(message.channel.nsfw === true) {
+  await yiff.e621.CubFilter(prop).then(r => {
+    const embed = new Discord.RichEmbed()
+        .setColor(config.green)
+        .setAuthor("e621")
+        .setDescription(`${r.tags}`)
+        .setImage(r.image)
+        .setFooter(`Artist: ${r.artist.join(" ")} | Score: ${r.score} | Fav. Count: ${r.fav_count} | ID: ${r.postID}`);
+    return await message.channel.send(embed);
+});
+} else { return await message.channel.send("no"); }
+}
+
 
   if (command === 'permissions') {
     if (config.selfbot === "true") {
