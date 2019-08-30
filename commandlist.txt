@@ -57,8 +57,6 @@
 
 !eval [js code]
 
-!lua [lua code]
-
 !cmd [command]
 
 !prune
