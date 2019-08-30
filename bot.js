@@ -400,7 +400,7 @@ if(command === "yiff") {
       return;
     }
   }
-  if(message.channel.nsfw === true) {
+  if(message.channel.nsfw === true | message.channel.type === "DMChannel") {
   const strx = args.join(" ");
   await yiff.e621.CubFilter(`${strx}`).then(async(r) => {
     var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
