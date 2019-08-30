@@ -1,4 +1,4 @@
-//VERSION = 14.5
+//VERSION = 14.4
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -401,7 +401,7 @@ if(command === "yiff") {
     }
   }
   if(message.channel.nsfw === true) {
-  await yiff.e621.CubFilter(prop).then(r => {
+  await yiff.e621.CubFilter(prop).then(async(r) => {
     const embed = new Discord.RichEmbed()
         .setColor(config.green)
         .setAuthor("e621")
