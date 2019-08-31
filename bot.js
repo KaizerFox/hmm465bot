@@ -1,4 +1,4 @@
-//VERSION = 14.7
+//VERSION = 14.5
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -409,7 +409,6 @@ if(command === "yiff") {
     const embed = new Discord.RichEmbed()
         .setColor(RandomNoHash)
         .setAuthor("e621")
-        .setDescription(`${r.tags}`)
         .setImage(r.image)
         .setFooter(`Artist: ${r.artist.join(" ")} | Score: ${r.score} | Fav. Count: ${r.fav_count} | ID: ${r.postID}`);
     return await message.channel.send(embed);
