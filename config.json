@@ -1,7 +1,7 @@
 {
 "token": "[your token]",
 "blacklist": "[a person's id you hate here]",
-"prefix": "!",
+"prefix": "~",
 "selfbot": "[true or false]",
 "owner":"[your user id]",
 "roleToDisco": "[role name]",
