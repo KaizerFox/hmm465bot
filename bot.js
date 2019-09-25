@@ -13,7 +13,6 @@ const util = require("util");
 const io = require('@pm2/io');
 const yt = require('ytdl-core');
 let yiff = require('yiff');
-let cloudinary = require("cloudinary");
 
 io.init({
   metrics: {
