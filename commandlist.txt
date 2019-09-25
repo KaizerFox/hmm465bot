@@ -1,61 +1,63 @@
-[COMMAND LIST VERSION: 4.3]
+[COMMAND LIST VERSION: 4.4]
+
+current prefix is ~
 
 =USABLE BY ANYONE:=
-!loadinglinegen
+loadinglinegen
 
-!joinmessage [@user]
+joinmessage [@user]
 
-!say [message]
+say [message]
 
-!permissions [@user]
+permissions [@user]
 
-!embed [color hex] [message]
+embed [color hex] [message]
 
-!8ball [question]
+8ball [question]
 
-!userinfo [@user]
+userinfo [@user]
 
-!gay [@user]
+gay [@user]
 
-!ping
+ping
 
-!reverse [text]
+reverse [text]
 
-!sourcecode
+sourcecode
 
-!invite
+invite
 
-!iq [@user]
+iq [@user]
 
-!lesbian [@user]
+lesbian [@user]
 
-!infect [@user]
+infect [@user]
 
-!furry [@user]
+furry [@user]
 
-!cuddle [@user]
+cuddle [@user]
 
-!randomstring
+randomstring
 
 =USABLE BY ANYONE WITH ADMIN PERM:=
-!kick [@user]
+kick [@user]
 
-!ban [@user]
+ban [@user]
 
-!unban [@user]
+unban [@user]
 
-!warn [@user] [reason]
+warn [@user] [reason]
 
-!dm [@user] [reason]
+dm [@user] [reason]
 
 =BOT's OWNER ONLY:=
-!dmall [message]
+dmall [message]
 
-!setstatus [game]
+setstatus [game]
 
-!eval [js code]
+eval [js code]
 
-!cmd [command]
+cmd [command]
 
-!prune
+prune
 
