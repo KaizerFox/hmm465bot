@@ -11,6 +11,7 @@
     "discord-rich-presence": "0.0.6",
     "discord.js": "^11.5.1",
     "e621": "0.0.2",
+    "google-images": "^2.1.0",
     "hoek": "^5.0.4",
     "lodash": "^4.17.15",
     "node-cmd": "^3.0.0",
