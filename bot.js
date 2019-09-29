@@ -294,7 +294,13 @@ if (command === "fox") {
 await type(message.channel,true,3);
 yiff.fox().then(async(r) => {
 let img = r.link("image");
-await message.channel.send('please ignore the code left in\n' + `${img}`);
+
+var mystring = `${image}`;
+mystring = mystring.replace(`<a href="image">`,'');
+var after = `${mystring}`
+mystring.replace(`</a>`,'');
+
+await message.channel.send(`${after}`);
 return await type(message.channel,false,0);
 });
   }
