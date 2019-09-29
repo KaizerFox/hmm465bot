@@ -1,8 +1,10 @@
-[COMMAND LIST VERSION: 4.4]
+[COMMAND LIST VERSION: 4.5]
 
 current prefix is ~
 
 =USABLE BY ANYONE:=
+fox
+
 loadinglinegen
 
 joinmessage [@user]
