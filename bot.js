@@ -295,7 +295,7 @@ await type(message.channel,true,3);
 yiff.fox().then(async(r) => {
 let img = r.link("image");
 
-var mystring = `${image}`;
+var mystring = `${img}`;
 mystring = mystring.replace(`<a href="image">`,'');
 var after = `${mystring}`
 mystring.replace(`</a>`,'');
