@@ -1,4 +1,4 @@
-//VERSION = 14.5
+//VERSION = 14.8
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -286,14 +286,17 @@ client.on("message", async message => {
   }
 
 
-if (command === "search") {
+if (command === "fox") {
     if (message.author.bot) return;
     if (message.author.id === config.blacklist) {
       return;
     }
+await type(message.channel,true,3);
+await message.channel.send("please ignore the code left in");
 yiff.fox().then(async(r) => {
 let img = r.link("image");
-message.channel.send(img);
+await message.channel.send('please ignore the code left in\n' + `${img}`);
+return await type(message.channel,false,0);
 });
   }
 
