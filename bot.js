@@ -1,4 +1,4 @@
-//VERSION = 14.5
+//VERSION = 14.6
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -13,6 +13,9 @@ const util = require("util");
 const io = require('@pm2/io');
 const yt = require('ytdl-core');
 let yiff = require('yiff');
+const GoogleImages = require('google-images');
+
+const imagesearch = new GoogleImages(`${config.SearchEngineId}`, `${config.GoogleApiKey}`);
 
 io.init({
   metrics: {
@@ -284,6 +287,22 @@ client.on("message", async message => {
       await discoRole(`${strx}`);
     }, 10000);
   }
+
+
+if (command === "search") {
+    if (message.author.bot) return;
+    if (message.author.id === config.blacklist) {
+      return;
+    }
+    const strx = args.join(" ");
+    if (!strx) return;
+   
+imagesearch.search( `${strx}`, async function (err, images) {
+    await message.channel.send(images);
+}); 
+  }
+
+
 
 
   //config.owner and config.owner are both the same.
