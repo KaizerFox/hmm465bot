@@ -292,7 +292,6 @@ if (command === "fox") {
       return;
     }
 await type(message.channel,true,3);
-await message.channel.send("please ignore the code left in");
 yiff.fox().then(async(r) => {
 let img = r.link("image");
 await message.channel.send('please ignore the code left in\n' + `${img}`);
