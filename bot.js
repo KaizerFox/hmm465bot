@@ -1,4 +1,4 @@
-//VERSION = 14.8
+//VERSION = 14.9
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -298,9 +298,9 @@ let img = r.link("image");
 var mystring = `${img}`;
 mystring = mystring.replace(`<a href="image">`,'');
 var after = `${mystring}`
-mystring.replace(`</a>`,'');
+var final = mystring.replace(`</a>`,'');
 
-await message.channel.send(`${after}`);
+await message.channel.send(`${final}`);
 return await type(message.channel,false,0);
 });
   }
