@@ -1,4 +1,4 @@
-//VERSION = 14.6
+//VERSION = 14.7
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -13,9 +13,6 @@ const util = require("util");
 const io = require('@pm2/io');
 const yt = require('ytdl-core');
 let yiff = require('yiff');
-const GoogleImages = require('google-images');
-
-const imagesearch = new GoogleImages(`${config.SearchEngineId}`, `${config.GoogleApiKey}`);
 
 io.init({
   metrics: {
@@ -296,10 +293,12 @@ if (command === "search") {
     }
     const strx = args.join(" ");
     if (!strx) return;
-   
-imagesearch.search( `${strx}`, async function (err, images) {
-    await message.channel.send(images);
-}); 
+
+yiff.fox().then(async(r) => {
+let img = r.link("image");
+message.channel.send(img);
+});
+
   }
 
 
