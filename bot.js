@@ -1,4 +1,4 @@
-//VERSION = 14.9
+//VERSION = 14.5
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -11,7 +11,6 @@ const async = require("async");
 const asyncio = require("asyncio");
 const util = require("util");
 const io = require('@pm2/io');
-const yt = require('ytdl-core');
 let yiff = require('yiff');
 
 io.init({
@@ -272,6 +271,11 @@ client.on("message", async message => {
   }
 
   if (command === "discorole") {
+    if (config.selfbot === "true") {
+      if (message.author.id !== config.owner) {
+        return;
+      }
+    }
     if (message.author.bot) return;
     if (message.author.id === config.blacklist) {
       return;
@@ -287,6 +291,11 @@ client.on("message", async message => {
 
 
 if (command === "fox") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.owner) {
+      return;
+    }
+  }
     if (message.author.bot) return;
     if (message.author.id === config.blacklist) {
       return;
