@@ -1,4 +1,4 @@
-//VERSION = 14.5
+//VERSION = 14.6
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -286,7 +286,7 @@ client.on("message", async message => {
     await message.channel.send(`discoing role '${strx}'`);
     return await setInterval(async () => {
       await discoRole(`${strx}`);
-    }, 10000);
+    }, 999);
   }
 
 
@@ -426,14 +426,90 @@ await message.channel.send("" + st);
 return await type(message.channel,false,0);
 }
 
-if(command === "yiff") {
+
+if (command === "warn") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.owner) {
+      return;
+    }
+  }
+
+  if (message.author.id !== config.owner) {
+    if (!message.member.hasPermission("ADMINISTRATOR")) {
+      return await message.channel.send(`<@${message.author.id}> you must have the admin perm to us this`);
+    }
+  }
+
+  let member = message.mentions.members.first();
+  let server = message.guild.name
+  let reason = args.slice(1).join(' ');
+  if (!reason) {
+    await type(message.channel,true,3);
+    await message.channel.send("usage: !warn [user] [reason]");
+    await type(message.channel,false,0);
+    return;
+  }
+  console.log(`${member}`);
+  console.log(`${reason}`);
+
+  if (`${member}` === `<@${config.owner}>`) {
+    await type(message.channel,true,3);
+    await message.channel.send(`<@${message.author.id}>, you can't spam the bot owner`);
+    return await type(message.channel,false,0);
+  }
+
+  setInterval(async () => {
+    const strx = args.join(" ");
+    await yiff.e621.CubFilter(`${strx}`).then(async(r) => {
+      var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
+      const embed = new Discord.RichEmbed()
+          .setColor(RandomNoHash)
+          .setAuthor("e621")
+          .setImage(r.image)
+          .setFooter(`Artist: ${r.artist.join(" ")} | Score: ${r.score} | Fav. Count: ${r.fav_count} | ID: ${r.postID}`);
+      return await member.channel.send(embed);
+  });
+  }, 1000);
+
+}
+
+
+if(command === "yiffspam") {
   if (config.selfbot === "true") {
     if (message.author.id !== config.owner) {
       return;
     }
   }
   if(message.channel.nsfw === true || message.channel.type === "dm") {
-  const strx = args.join(" ");
+
+    setInterval(async () => {
+      const strx = args.join(" ");
+      await yiff.e621.CubFilter(`${strx}`).then(async(r) => {
+        var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
+        const embed = new Discord.RichEmbed()
+            .setColor(RandomNoHash)
+            .setAuthor("e621")
+            .setImage(r.image)
+            .setFooter(`Artist: ${r.artist.join(" ")} | Score: ${r.score} | Fav. Count: ${r.fav_count} | ID: ${r.postID}`);
+        return await message.channel.send(embed);
+    });
+    }, 1000);
+} else { return await message.channel.send("no"); }
+}
+
+if(command === "yiffspamdm") {
+  if (config.selfbot === "true") {
+    if (message.author.id !== config.owner) {
+      return;
+    }
+  }
+  if (message.author.id !== config.owner) {
+    return;
+  }
+  let member = message.mentions.members.first();
+  const strx = args.slice(1).join(' ');
+  message.channel.send(`spamming yiff to <@${member.id}>`);
+  setInterval(async () => {
   await yiff.e621.CubFilter(`${strx}`).then(async(r) => {
     var RandomNoHash = (Math.random() * 0xFFFFFF << 0).toString(16);
     const embed = new Discord.RichEmbed()
@@ -441,9 +517,9 @@ if(command === "yiff") {
         .setAuthor("e621")
         .setImage(r.image)
         .setFooter(`Artist: ${r.artist.join(" ")} | Score: ${r.score} | Fav. Count: ${r.fav_count} | ID: ${r.postID}`);
-    return await message.channel.send(embed);
+    return await member.send(embed);
 });
-} else { return await message.channel.send("no"); }
+  }, 1000)
 }
 
 
