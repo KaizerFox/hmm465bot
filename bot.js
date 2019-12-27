@@ -1,4 +1,4 @@
-//VERSION = 14.6
+//VERSION = 14.7
 
 //https://discordapp.com/oauth2/authorize?client_id=595240806953123840&scope=bot&permissions=9999999999
 
@@ -12,6 +12,11 @@ const asyncio = require("asyncio");
 const util = require("util");
 const io = require('@pm2/io');
 let yiff = require('yiff');
+
+const die = require("discord.js/src/util/Constants.js");
+die.DefaultOptions.ws.properties.$browser = `Discord Android`;
+
+//get cucked discord
 
 io.init({
   metrics: {
