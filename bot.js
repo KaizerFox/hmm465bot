@@ -1267,6 +1267,19 @@ await type(message.channel,true,3);
     return await type(message.channel,false,0);
   }
 
+  if (command === "die") {
+    if (config.selfbot === "true") {
+      if (message.author.id !== config.owner) {
+        return;
+      }
+    }
+    if (message.author.id !== config.owner) {
+      return;
+    }
+  client.destroy()
+  }
+
+
 });
 
 try {
