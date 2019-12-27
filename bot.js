@@ -21,6 +21,11 @@ io.init({
   }
 });
 
+function sleep(delay) {
+  var start = new Date().getTime();
+  while (new Date().getTime() < start + delay);
+}
+
 var http = require('https');
 var fs = require('fs');
 
@@ -113,11 +118,6 @@ client.on("ready", () => {
  client.user.setPresence({game:{name: "with code"}});
   console.log("loaded".green)
 });
-
-function sleep(delay) {
-  var start = new Date().getTime();
-  while (new Date().getTime() < start + delay);
-}
 
 function sendCodeBlock(channel,message,lang,MessageBefore) {
 if(`${lang}` === "") { lang = "xl"; }
@@ -1276,7 +1276,9 @@ await type(message.channel,true,3);
     if (message.author.id !== config.owner) {
       return;
     }
-  client.destroy()
+  message.channel.send(":(");
+  sleep(100);
+  client.destroy();
   }
 
 
